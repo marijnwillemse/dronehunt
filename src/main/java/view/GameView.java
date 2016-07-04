@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -32,8 +33,8 @@ public class GameView extends JPanel {
   private int gameWidth;
   private int gameHeight;
   private int scale;
-  private Graphics dbg;
-  private Image dbImage = null;
+  private Graphics context;
+  private Image bufferImage = null;
 
   public GameView(MainModel model, int gameWidth, int gameHeight, int scale) {
     this.model = model;
@@ -62,27 +63,27 @@ public class GameView extends JPanel {
   public void render(double t)
   // Draw the current frame to an image buffer
   {
-    if (dbImage == null) { // Create the buffer
-      dbImage = createImage(gameWidth, gameHeight);
-      if (dbImage == null) {
-        System.out.println("dbImage is null");
+    if (bufferImage == null) { // Create the buffer
+      bufferImage = createImage(gameWidth, gameHeight);
+      if (bufferImage == null) {
+        System.out.println("Buffer image is null");
         return;
       }
       else {
-        dbg = dbImage.getGraphics();
+        context = bufferImage.getGraphics();
       }
     }
 
     // Draw all game elements to the buffer image
     drawBackground();
-    sceneryView.drawBackground(dbg);
-    drawUnits(t);
-    sceneryView.drawForeground(dbg);
+    sceneryView.drawBackground(context);
+    drawUnits(t, context);
+    sceneryView.drawForeground(context);
     drawHUD();
   }
 
   private void drawBackground() {
-    dbg.setColor(GameColors.DBLUE.getRGB());
+    context.setColor(GameColors.DBLUE.getRGB());
 
 //    Unit myUnit = model.getActiveUnit();
 //    if(myUnit != null) {
@@ -91,11 +92,11 @@ public class GameView extends JPanel {
 //      }
 //    }
 
-    dbg.fillRect(0, 0, gameWidth, gameHeight);
+    context.fillRect(0, 0, gameWidth, gameHeight);
   }
 
   private void drawHUD() {
-    resetFont(dbg, 12);
+    resetFont(context, 12);
 
 //    if(model.getCurrentLevel().isPlaying() == false){
 //      hudView.drawLevelBox(dbg, model.getLevelPosition()+1);
@@ -109,9 +110,9 @@ public class GameView extends JPanel {
 
     // Frame count
     int fontSize = 12;
-    dbg.setFont(new Font("Courier", Font.PLAIN, fontSize));
-    dbg.setColor(Color.white);
-    dbg.drawString(frameCounter.getFramesPerSecond(), 10, 20);
+    context.setFont(new Font("Courier", Font.PLAIN, fontSize));
+    context.setColor(Color.white);
+    context.drawString(frameCounter.getFramesPerSecond(), 10, 20);
   }
 
   private void resetFont(Graphics g, int fontSize) {
@@ -120,22 +121,11 @@ public class GameView extends JPanel {
   }
 
 
-  private void drawUnits(double t) {
-    // if current level is a game level
-//    if(model.getCurrentLevel() instanceof GameLevel) {
-//      Unit myUnit = model.getActiveUnit();
-//      if(myUnit != null) {
-//
-//        Rectangle unitRegion = myUnit.getRegion();
-//
-//        if (myUnit instanceof Quadcopter) {
-//          droneView.draw(t, dbg, unitRegion.x, unitRegion.y, "QUADCOPTER");
-//        }
-//        if (myUnit instanceof Hexacopter) {
-//          droneView.draw(t, dbg, unitRegion.x, unitRegion.y, "HEXACOPTER");
-//        }
-//      }
-//    }
+  private void drawUnits(double t, Graphics g) {
+    List<Drone> drones = model.getWorld().getDrones();
+    for (Drone drone : drones) {
+      droneView.draw(t, g, drone);
+    }
   }
 
 
@@ -149,8 +139,8 @@ public class GameView extends JPanel {
     Graphics g;
     try {
       g = this.getGraphics(); // Get the panel's graphic context
-      if ((g != null) && (dbImage != null))
-        g.drawImage(dbImage, 0, 0, gameWidth*scale, gameHeight*scale, null);
+      if ((g != null) && (bufferImage != null))
+        g.drawImage(bufferImage, 0, 0, gameWidth*scale, gameHeight*scale, null);
       Toolkit.getDefaultToolkit().sync(); // Sync the display on some systems
       g.dispose();
     }

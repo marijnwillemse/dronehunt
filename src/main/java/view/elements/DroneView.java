@@ -6,6 +6,8 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
+import main.java.model.Drone;
+
 @SuppressWarnings("serial")
 public class DroneView extends JPanel {
 
@@ -39,6 +41,14 @@ public class DroneView extends JPanel {
       } else {
         g.drawImage(hexaImage2, x, y, this);
       }
+    }
+  }
+
+  public void draw(double t, Graphics g, Drone drone) {
+    if(t % 0.1 > 0.05) {
+      g.drawImage(quadImage1, (int)drone.getX(), (int)drone.getY(), this);
+    } else {
+      g.drawImage(quadImage2, (int)drone.getX(), (int)drone.getY(), this);
     }
   }
 }
