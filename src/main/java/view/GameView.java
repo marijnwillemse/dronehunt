@@ -10,13 +10,9 @@ import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
+import main.java.controller.state.EscapeState;
 import main.java.model.MainModel;
-import main.java.model.level.FinishedLevel;
-import main.java.model.level.GameLevel;
-import main.java.model.unit.EscapeState;
-import main.java.model.unit.Hexacopter;
-import main.java.model.unit.Quadcopter;
-import main.java.model.unit.Unit;
+import main.java.model.Drone;
 import main.java.view.elements.DroneView;
 import main.java.view.elements.FrameCounter;
 import main.java.view.elements.HUDView;
@@ -88,12 +84,12 @@ public class GameView extends JPanel {
   private void drawBackground() {
     dbg.setColor(GameColors.DBLUE.getRGB());
 
-    Unit myUnit = model.getActiveUnit();
-    if(myUnit != null) {
-      if(myUnit.getState() instanceof EscapeState) {
-        dbg.setColor(GameColors.MELON.getRGB());
-      }
-    }
+//    Unit myUnit = model.getActiveUnit();
+//    if(myUnit != null) {
+//      if(myUnit.getState() instanceof EscapeState) {
+//        dbg.setColor(GameColors.MELON.getRGB());
+//      }
+//    }
 
     dbg.fillRect(0, 0, gameWidth, gameHeight);
   }
@@ -101,15 +97,15 @@ public class GameView extends JPanel {
   private void drawHUD() {
     resetFont(dbg, 12);
 
-    if(model.getCurrentLevel().isPlaying() == false){
-      hudView.drawLevelBox(dbg, model.getLevelPosition()+1);
-    }
+//    if(model.getCurrentLevel().isPlaying() == false){
+//      hudView.drawLevelBox(dbg, model.getLevelPosition()+1);
+//    }
 
-    hudView.drawScoreBox(dbg, model.getScore());
+//    hudView.drawScoreBox(dbg, model.getScore());
 
-    if(model.getCurrentLevel() instanceof FinishedLevel){
-      hudView.drawGameOverBox(dbg);
-    }
+//    if(model.getCurrentLevel() instanceof FinishedLevel){
+//      hudView.drawGameOverBox(dbg);
+//    }
 
     // Frame count
     int fontSize = 12;
@@ -126,20 +122,20 @@ public class GameView extends JPanel {
 
   private void drawUnits(double t) {
     // if current level is a game level
-    if(model.getCurrentLevel() instanceof GameLevel) {
-      Unit myUnit = model.getActiveUnit();
-      if(myUnit != null) {
-
-        Rectangle unitRegion = myUnit.getRegion();
-
-        if (myUnit instanceof Quadcopter) {
-          droneView.draw(t, dbg, unitRegion.x, unitRegion.y, "QUADCOPTER");
-        }
-        if (myUnit instanceof Hexacopter) {
-          droneView.draw(t, dbg, unitRegion.x, unitRegion.y, "HEXACOPTER");
-        }
-      }
-    }
+//    if(model.getCurrentLevel() instanceof GameLevel) {
+//      Unit myUnit = model.getActiveUnit();
+//      if(myUnit != null) {
+//
+//        Rectangle unitRegion = myUnit.getRegion();
+//
+//        if (myUnit instanceof Quadcopter) {
+//          droneView.draw(t, dbg, unitRegion.x, unitRegion.y, "QUADCOPTER");
+//        }
+//        if (myUnit instanceof Hexacopter) {
+//          droneView.draw(t, dbg, unitRegion.x, unitRegion.y, "HEXACOPTER");
+//        }
+//      }
+//    }
   }
 
 

@@ -1,4 +1,4 @@
-package main.java.model.unit;
+package main.java.controller.state;
 
 public interface State {
   public void update();

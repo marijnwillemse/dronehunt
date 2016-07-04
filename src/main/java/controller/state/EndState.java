@@ -1,8 +1,10 @@
-package main.java.model.unit;
+package main.java.controller.state;
+
+import main.java.model.Drone;
 
 public class EndState implements State {
 
-  public EndState(Unit unit) {
+  public EndState(Drone unit) {
     // unit is in state of removal
   }
 

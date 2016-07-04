@@ -1,8 +1,11 @@
-package main.java.model.unit;
+package main.java.model;
 
 import java.awt.Rectangle;
 
-public abstract class Unit {
+import main.java.controller.state.State;
+import main.java.controller.state.WaitState;
+
+public class Drone {
 
   private double x, y, vx, vy, ax, ay;
 
@@ -10,8 +13,8 @@ public abstract class Unit {
   private int ySize;
 
   private State state;
-
-  public Unit(int xSize, int ySize) {		
+  
+  public Drone() {		
     x = 0.0;
     y = 0.0;
     vx = 0.0;
@@ -19,8 +22,8 @@ public abstract class Unit {
     ax = 0.0;
     ay = 0.0;
 
-    this.xSize = xSize;
-    this.ySize = ySize;
+    this.xSize = 40;
+    this.ySize = 40;
 
     setState(new WaitState(this));
   }
@@ -33,50 +36,17 @@ public abstract class Unit {
     return state;
   }
 
-  public void update(double dt) {
-    state.update();
-    move(dt);
-  }
-
-
-  private void move(double dt) {
-    vx = vx + dt*ax;
-    vy = vy + dt*ay;
-
-    x = x + dt*vx;
-    y = y + dt*vy;
-  }
-
   public void setPosition(double x, double y) {
     this.x = x;
     this.y = y;
   }
 
-  public double getX() {	return x; }
-  public double getY() {	return y; }
+  public double getX() { return x; }
+  public double getY() { return y; }
 
   public void setVelocity(double vx, double vy) {
     this.vx = vx;
     this.vy = vy;
-  }
-
-  public void checkBounce() {
-    if(x < xSize/2) {
-      x = xSize/2;
-      vx = -vx; 
-    }
-    if(x > 256.0 - xSize/2) {
-      x = 256.0 - xSize/2;
-      vx = -vx;
-    }
-    if(y < ySize/2) {
-      y = ySize/2;
-      vy = -vy;
-    }
-    if(y > 177.0 - ySize/2) {
-      y = 177.0 - ySize/2;
-      vy = -vy;
-    }
   }
 
   public Rectangle getRegion() {

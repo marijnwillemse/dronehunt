@@ -1,8 +1,10 @@
-package main.java.model.unit;
+package main.java.controller.state;
+
+import main.java.model.Drone;
 
 public class EvadeState implements State {
 
-  private Unit unit;
+  private Drone unit;
 
   private int turnTimer;
   private static final int TURNFLOOR = 15;
@@ -12,7 +14,7 @@ public class EvadeState implements State {
   private static final int ESCAPEFLOOR = 120;
   private static final int ESCAPECEIL = 180;
 
-  public EvadeState(Unit unit) {
+  public EvadeState(Drone unit) {
     this.unit = unit;
 
     deploy();
@@ -42,11 +44,11 @@ public class EvadeState implements State {
     }
     escapeTimer--;
 
-    unit.checkBounce();
+//    unit.checkBounce();
   }
 
   private void turn() {
-    if(unit instanceof Quadcopter){
+//    if(unit instanceof Quadcopter){
       int roll = roll(0, 4);
       switch(roll) {
         case 0: unit.setVelocity(100.0, 0.0);
@@ -58,19 +60,19 @@ public class EvadeState implements State {
         case 3: unit.setVelocity(0.0, -100.0);
         break;
       }
-    }
-    if(unit instanceof Hexacopter){
-      int roll = roll(0, 4);
-      switch(roll) {
-        case 0: unit.setVelocity(65.0, 65.0);
-        break;
-        case 1: unit.setVelocity(-65.0, 65.0);
-        break;
-        case 2: unit.setVelocity(65.0, -65.0);
-        break;
-        case 3: unit.setVelocity(-65.0, -65.0);
-        break;
-      }
-    }
+//    }
+//    if(unit instanceof Hexacopter){
+//      int roll = roll(0, 4);
+//      switch(roll) {
+//        case 0: unit.setVelocity(65.0, 65.0);
+//        break;
+//        case 1: unit.setVelocity(-65.0, 65.0);
+//        break;
+//        case 2: unit.setVelocity(65.0, -65.0);
+//        break;
+//        case 3: unit.setVelocity(-65.0, -65.0);
+//        break;
+//      }
+//    }
   }
 }

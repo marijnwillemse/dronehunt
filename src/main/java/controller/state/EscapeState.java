@@ -1,10 +1,12 @@
-package main.java.model.unit;
+package main.java.controller.state;
+
+import main.java.model.Drone;
 
 public class EscapeState implements State {
 
-  private Unit unit;
+  private Drone unit;
 
-  public EscapeState(Unit unit) {
+  public EscapeState(Drone unit) {
     this.unit = unit;
     unit.setVelocity(0.0, -200.0);
   }
