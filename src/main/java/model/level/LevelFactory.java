@@ -6,65 +6,65 @@ import java.util.UUID;
 import main.java.model.MainModel;
 
 public class LevelFactory {
-	
-	private MainModel model;
-	private ArrayList<BaseLevelState> levelMap;
-	
-	public LevelFactory(MainModel model) {
-		this.model = model;
-		levelMap = new ArrayList<BaseLevelState>();
-	}
-	
-	public BaseLevelState createLevel(String levelType) {
 
-		if(levelType == null){
-			return null;
-		}		
+  private MainModel model;
+  private ArrayList<BaseLevelState> levelMap;
 
-		if(levelType.equalsIgnoreCase("1")){
-			return new GameLevel1(model, this);
+  public LevelFactory(MainModel model) {
+    this.model = model;
+    levelMap = new ArrayList<BaseLevelState>();
+  }
 
-		}
-		else if(levelType.equalsIgnoreCase("2")){
-			return new GameLevel2(model, this);
-		}
+  public BaseLevelState createLevel(String levelType) {
 
-		return null;
-	}
+    if(levelType == null){
+      return null;
+    }		
 
-	public BaseLevelState nextLevel(BaseLevelState currentLevel) {
-		if (currentLevel == null) return null;
+    if(levelType.equalsIgnoreCase("1")){
+      return new GameLevel1(model, this);
 
-		int index = levelPosition(currentLevel);
+    }
+    else if(levelType.equalsIgnoreCase("2")){
+      return new GameLevel2(model, this);
+    }
 
-		if(index == levelMap.size()-1) {
-			return null;
-		}
-		
-		else
-			return levelMap.get(index+1);
-	}
-	
-	public int levelPosition(BaseLevelState level) {
-		UUID id = level.getID();
-		
-		for(int i=0; i<levelMap.size(); i++) {
-			if(levelMap.get(i).getID() == id)
-				return i;
-		}
-		return -1;
-	}
+    return null;
+  }
 
-	public BaseLevelState finished() {
-		System.out.println("Finished!");
-		return new FinishedLevel(model, this);
-	}
+  public BaseLevelState nextLevel(BaseLevelState currentLevel) {
+    if (currentLevel == null) return null;
 
-	public void addLevel(BaseLevelState level) {
-		levelMap.add(level);
-	}
+    int index = levelPosition(currentLevel);
 
-	public BaseLevelState getLevel(int index) {
-		return levelMap.get(index);
-	}
+    if(index == levelMap.size()-1) {
+      return null;
+    }
+
+    else
+      return levelMap.get(index+1);
+  }
+
+  public int levelPosition(BaseLevelState level) {
+    UUID id = level.getID();
+
+    for(int i=0; i<levelMap.size(); i++) {
+      if(levelMap.get(i).getID() == id)
+        return i;
+    }
+    return -1;
+  }
+
+  public BaseLevelState finished() {
+    System.out.println("Finished!");
+    return new FinishedLevel(model, this);
+  }
+
+  public void addLevel(BaseLevelState level) {
+    levelMap.add(level);
+  }
+
+  public BaseLevelState getLevel(int index) {
+    return levelMap.get(index);
+  }
 }
