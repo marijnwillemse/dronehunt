@@ -5,25 +5,32 @@ import java.awt.event.MouseEvent;
 import main.java.model.MainModel;
 
 public class AppController {
+  private GameController gameController;
+  
   private MainModel model;
   private InputContainer inputContainer;
 
-  public final int WIDTH = 256;		// application width
-  public final int HEIGHT = 224;	// application height
-  public final int VIEW_SCALE = 4;	// application scale degree 
+  public final int WIDTH = 256;		// game width
+  public final int HEIGHT = 224;	// game height
+  public final int VIEW_SCALE = 4;	// game scale degree 
 
   public AppController(MainModel model, InputContainer inputContainer) {
+    gameController = new GameController(model);
+    
     this.model = model;
-    model.newGame();
     this.inputContainer = inputContainer;
   }
 
   /**
-   * Update the game
+   * Update the application
    */
   public void update(double dt) {
     processInput();	  // process user input and clear
+    
+    // TODO: Transfer functionality to GameController
     model.update(dt); // update game models relative to delta time
+    
+    gameController.update(dt);
   }
 
   /**
