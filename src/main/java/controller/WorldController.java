@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.World;
+import main.java.model.Drone;
 import main.java.model.MainModel;
 
 public class WorldController {
@@ -23,8 +24,14 @@ public class WorldController {
       // Spawn a new drone
       droneController.spawnDrone();
     }
+    
     // Feel listener
+    
     // Move
+    for (Drone drone : world.getDrones()) {
+      droneController.move(drone, dt);
+    }
+    
     // Update
     // Feel force
     // Collide
