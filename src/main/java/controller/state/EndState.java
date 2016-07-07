@@ -4,7 +4,7 @@ import main.java.model.Drone;
 
 public class EndState implements State {
 
-  public EndState(Drone unit) {
+  public EndState(Drone drone) {
     // unit is in state of removal
   }
 

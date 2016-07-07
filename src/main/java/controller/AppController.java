@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import main.java.model.MainModel;
 
 public class AppController {
-  private WorldController gameController;
+  private GameController gameController;
   
   private InputContainer inputContainer;
 
@@ -14,7 +14,7 @@ public class AppController {
   public final int VIEW_SCALE = 4;	// game scale degree 
 
   public AppController(MainModel model, InputContainer inputContainer) {
-    gameController = new WorldController(model);
+    gameController = new GameController(model);
     
     this.inputContainer = inputContainer;
   }
@@ -23,9 +23,8 @@ public class AppController {
    * Update the application
    */
   public void update(double dt) {
-    processInput();	  // process user input and clear
-    
-    gameController.update(dt);
+    processInput();	// Process user input and clear
+    gameController.update(dt); // Update game logic
   }
 
   /**
@@ -33,15 +32,16 @@ public class AppController {
    * processed in game and removed.
    */
   private void processInput() {
-//    // process mouse events catched in input container
-//    for(MouseEvent e : inputContainer.getMouseEvents()) {
-//      int button = e.getButton();
-//      
-//      // adjust to view scale
-//      int x = e.getX() / VIEW_SCALE;
-//      int y = e.getY() / VIEW_SCALE;
-//      model.getCurrentLevel().testMousePress(button, x, y);
-//    }
-//    inputContainer.clearInput();
+    // process mouse events catched in input container
+    for(MouseEvent e : inputContainer.getMouseEvents()) {
+      int button = e.getButton();
+      
+      // adjust to view scale
+      int x = e.getX() / VIEW_SCALE;
+      int y = e.getY() / VIEW_SCALE;
+      
+      gameController.MousePressed(button, x, y);
+    }
+    inputContainer.clearInput();
   }
 }

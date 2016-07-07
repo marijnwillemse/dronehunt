@@ -4,7 +4,7 @@ import main.java.model.Drone;
 
 public class WaitState implements State {
 
-  public WaitState(Drone unit) {
+  public WaitState(Drone drone) {
   }
 
   public void update() {

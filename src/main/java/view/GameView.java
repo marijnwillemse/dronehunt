@@ -125,6 +125,8 @@ public class GameView extends JPanel {
     List<Drone> drones = model.getWorld().getDrones();
     for (Drone drone : drones) {
       droneView.draw(t, g, drone);
+      droneView.drawVelocityVector(t, g, drone);
+      droneView.drawTarget(t, g, drone);
     }
   }
 

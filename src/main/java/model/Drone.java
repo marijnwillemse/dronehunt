@@ -11,45 +11,35 @@ public class Drone {
   // Basic physics mechanics are saved as vector quantities  
   private Vector2D position;
   private Vector2D velocity;
-  private Vector2D acceleration;
 
   private int xSize;
   private int ySize;
 
   private State state;
   
+  private Vector2D target;
+  
+  private double maxSpeed;
+  private double torque;
+  private double brakingPower;
+  
   public Drone() {		
     position = new Vector2D(0.0, 0.0);
     velocity = new Vector2D(0.0, 0.0);
-    acceleration = new Vector2D(0.0, 0.0);
 
     this.xSize = 40;
     this.ySize = 40;
+    
+    maxSpeed = 100000;
+    torque = 2000;
+    brakingPower = torque;
+    
 
     setState(new WaitState(this));
   }
-
-  public void setState(State state) {
-    this.state = state;
-  }
-
-  public State getState(){
-    return state;
-  }
-
-  public double getX() { return position.getX(); }
-  public double getY() { return position.getY(); }
-
-  public void setPosition(Vector2D position) {
-    this.position = position;
-  }
-
-  public void setVelocity(Vector2D velocity) {
-    this.velocity = velocity;
-  }
-
-  public void setAcceleration(Vector2D acceleration) {
-    this.acceleration = acceleration;
+  
+  public Vector2D getPosition() {
+    return position;
   }
 
   public Rectangle getRegion() {
@@ -60,25 +50,65 @@ public class Drone {
     return new Rectangle(x1, y1, xSize, ySize);
   }
 
-  public Vector2D getPosition() {
-    return position;
+  public State getState(){
+    return state;
   }
 
+  public Vector2D getTarget() {
+    return target;
+  }
+  
   public Vector2D getVelocity() {
     return velocity;
   }
 
-  public Vector2D getAcceleration() {
-    return acceleration;
-  }
+  public double getX() { return position.getX(); }
 
+  public double getY() { return position.getY(); }
+  
   public void setPosition(double x, double y) {
     this.position = new Vector2D(x, y);
+  }
+
+  public void setPosition(Vector2D position) {
+    this.position = position;
+  }
+
+  public void setState(State state) {
+    this.state = state;
+  }
+
+  public void setTarget(Vector2D target) {
+    this.target = target;
   }
   public void setVelocity(double x, double y) {
     this.velocity = new Vector2D(x, y);
   }
-  public void setAcceleration(double x, double y) {
-    this.acceleration = new Vector2D(x, y);
+  
+  public void setVelocity(Vector2D velocity) {
+    this.velocity = velocity;
+  }
+  
+  public double getMaxSpeed() {
+    return maxSpeed;
+  }
+  
+  public double getTorque() {
+    return torque;
+  }
+  
+  public double getBrakingPower() {
+    return brakingPower;
+  }
+
+  public boolean hasTarget() {
+    if (target == null) { return false; }
+    return true;
+  }
+
+  public boolean hasReachedTarget() {
+    if (target == null) { return false; }
+    if (position.distanceTo(target) < 1) { return true; }
+    return false;
   }
 }

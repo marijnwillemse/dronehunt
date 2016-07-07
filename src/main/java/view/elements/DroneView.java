@@ -25,7 +25,6 @@ public class DroneView extends JPanel {
   }
 
   public void draw(double t, Graphics g, int x, int y, String droneType) {
-    g.setColor(Color.blue);
     if(droneType.equalsIgnoreCase("QUADCOPTER")) {
       //			g.drawRect(x, y, 40, 29);
       if(t % 0.1 > 0.05) {
@@ -49,6 +48,27 @@ public class DroneView extends JPanel {
       g.drawImage(quadImage1, (int)drone.getX(), (int)drone.getY(), this);
     } else {
       g.drawImage(quadImage2, (int)drone.getX(), (int)drone.getY(), this);
+    }
+  }
+  
+  public void drawVelocityVector(double t, Graphics g, Drone drone) {
+    g.setColor(Color.green);
+    g.drawLine((int)drone.getX(), (int)drone.getY(),
+        (int)(drone.getX() + drone.getVelocity().getX()/10),
+        (int)(drone.getY() + drone.getVelocity().getY()/10));
+  }
+  
+  public void drawTarget(double t, Graphics g, Drone drone) {
+    if (drone.hasTarget()) {
+      g.setColor((drone.hasReachedTarget() ? Color.blue : Color.red));
+      g.drawLine((int)drone.getTarget().getX()-2,
+          (int)drone.getTarget().getY()-2,
+          (int)drone.getTarget().getX()+2,
+          (int)drone.getTarget().getY()+2);
+      g.drawLine((int)drone.getTarget().getX()+2,
+          (int)drone.getTarget().getY()-2,
+          (int)drone.getTarget().getX()-2,
+          (int)drone.getTarget().getY()+2);
     }
   }
 }
