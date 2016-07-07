@@ -1,5 +1,6 @@
 package main.java.controller.state;
 
+import main.java.controller.DroneController;
 import main.java.model.Drone;
 
 public class EscapeState implements State {
@@ -10,11 +11,11 @@ public class EscapeState implements State {
     this.drone = drone;
     drone.setVelocity(0.0, -200.0);
   }
-
-  public void update() {
-    if(drone.getY() < 0) {
-      drone.setState(new EndState(drone));
-    }
+  
+  @Override
+  public void update(DroneController droneController, double dt) {
+    // TODO Auto-generated method stub
+    
   }
 
 }

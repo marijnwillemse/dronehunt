@@ -2,8 +2,8 @@ package main.java.model;
 
 import java.awt.Rectangle;
 
+import main.java.controller.state.EvadeState;
 import main.java.controller.state.State;
-import main.java.controller.state.WaitState;
 import main.java.math.Vector2D;
 
 public class Drone {
@@ -31,11 +31,11 @@ public class Drone {
     this.ySize = 40;
     
     maxSpeed = 100000;
-    torque = 2000;
-    brakingPower = torque;
+    torque = 500;
+    brakingPower = 800;
     
 
-    setState(new WaitState(this));
+    setState(new EvadeState(this));
   }
   
   public Vector2D getPosition() {

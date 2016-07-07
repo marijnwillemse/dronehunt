@@ -24,30 +24,13 @@ public class DroneView extends JPanel {
     quadImage2 = imageLoader.loadImageIcon("quadcopter.2.png").getImage();
   }
 
-  public void draw(double t, Graphics g, int x, int y, String droneType) {
-    if(droneType.equalsIgnoreCase("QUADCOPTER")) {
-      //			g.drawRect(x, y, 40, 29);
-      if(t % 0.1 > 0.05) {
-        g.drawImage(quadImage1, x, y, this);
-      } else {
-        g.drawImage(quadImage2, x, y, this);
-      }
-    }
-    if(droneType.equalsIgnoreCase("HEXACOPTER")) {
-      //			g.drawRect(x, y, 62, 29);
-      if(t % 0.1 > 0.05) {
-        g.drawImage(hexaImage1, x, y, this);
-      } else {
-        g.drawImage(hexaImage2, x, y, this);
-      }
-    }
-  }
-
   public void draw(double t, Graphics g, Drone drone) {
     if(t % 0.1 > 0.05) {
-      g.drawImage(quadImage1, (int)drone.getX(), (int)drone.getY(), this);
+      g.drawImage(quadImage1, (int)drone.getX() - quadImage1.getWidth(null)/2,
+          (int)drone.getY() - quadImage1.getHeight(null)/2, this);
     } else {
-      g.drawImage(quadImage2, (int)drone.getX(), (int)drone.getY(), this);
+      g.drawImage(quadImage2, (int)drone.getX() - quadImage1.getWidth(null)/2,
+          (int)drone.getY() - quadImage1.getHeight(null)/2, this);
     }
   }
   

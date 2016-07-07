@@ -1,5 +1,6 @@
 package main.java.controller.state;
 
+import main.java.controller.DroneController;
 import main.java.model.Drone;
 
 public class WaitState implements State {
@@ -7,6 +8,9 @@ public class WaitState implements State {
   public WaitState(Drone drone) {
   }
 
-  public void update() {
+  @Override
+  public void update(DroneController droneController, double dt) {
+    // TODO Auto-generated method stub
+    
   }
 }

@@ -9,13 +9,12 @@ public class AppController {
   
   private InputContainer inputContainer;
 
-  public final int WIDTH = 256;		// game width
-  public final int HEIGHT = 224;	// game height
-  public final int VIEW_SCALE = 4;	// game scale degree 
+  public final int WIDTH = 256;		// game window width
+  public final int HEIGHT = 224;	// game window height
+  public final int VIEW_SCALE = 4;	// upscale factor
 
   public AppController(MainModel model, InputContainer inputContainer) {
-    gameController = new GameController(model);
-    
+    gameController = new GameController(this, model);
     this.inputContainer = inputContainer;
   }
 

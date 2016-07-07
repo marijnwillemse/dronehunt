@@ -1,6 +1,10 @@
 package main.java.controller;
 
 import main.java.model.World;
+
+import java.awt.Rectangle;
+
+import main.java.math.MathOperations;
 import main.java.math.Vector2D;
 import main.java.model.Drone;
 import main.java.model.MainModel;
@@ -32,7 +36,7 @@ public class DroneController {
   }
 
   public void update(Drone drone, double dt) {
-    drone.getState().update();
+    drone.getState().update(this, dt);
     if (drone.getTarget() != null) {
       steer(drone, dt);
     }
@@ -92,5 +96,13 @@ public class DroneController {
       drone.setVelocity(new Vector2D());
       return;
     }
+  }
+
+  public void newTarget(Drone drone) {
+    Rectangle areaAir = world.getAreaAir();
+    Vector2D target = new Vector2D(
+        (double)MathOperations.randomInteger(areaAir.x, areaAir.width),
+        (double)MathOperations.randomInteger(areaAir.y, areaAir.height));
+    drone.setTarget(target);
   }
 }

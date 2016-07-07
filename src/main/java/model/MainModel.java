@@ -2,16 +2,16 @@ package main.java.model;
 
 public class MainModel {
 
-  private World game;
+  private World world;
 
   public MainModel() {
   }
 
-  public World newGame() {
-    return game = new World();
+  public World getWorld() {
+    return world;
   }
 
-  public World getWorld() {
-    return game;
+  public void setWorld(World world) {
+    this.world = world;
   }
 }

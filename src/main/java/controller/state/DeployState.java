@@ -1,5 +1,6 @@
 package main.java.controller.state;
 
+import main.java.controller.DroneController;
 import main.java.model.Drone;
 
 public class DeployState implements State {
@@ -11,10 +12,11 @@ public class DeployState implements State {
     drone.setPosition(0.0, -200.0);
   }
 
-  public void update() {
+
+  @Override
+  public void update(DroneController droneController, double dt) {
     if(drone.getY() < 0) {
       drone.setState(new EndState(drone));
     }
   }
-
 }
