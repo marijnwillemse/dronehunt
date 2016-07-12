@@ -15,16 +15,16 @@ public class Engine {
   }
 
   /**
-   * The engine runs in a seperate thread so it won't interfere with the EDT
+   * The engine runs in a seperate thread so it won't interfere with the EDT.
    */
   public void init() {
-    // Place the gameloop in a runnable job
+    // Place the gameloop in a runnable job,
     Runnable gameLoop = new Runnable() {
       public void run() {
         gameLoop();
       }
     };
-    new Thread(gameLoop).start(); // Then execute it
+    new Thread(gameLoop).start(); // finally execute it.
   }
 
   /**

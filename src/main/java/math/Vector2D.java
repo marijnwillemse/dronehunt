@@ -18,30 +18,30 @@ public class Vector2D {
     return "Vector2D(" + x + ", " + y + ")";
   }
 
-  // Calculate the magnitude of the vector
+  // Calculate the magnitude of the vector.
   public double length() {
     return Math.sqrt ( x*x + y*y );
   }
 
-  // Calculate the sum of a vector with this
+  // Calculate the sum of a vector with this.
   public Vector2D add(Vector2D v1) {
     Vector2D v2 = new Vector2D(this.x + v1.x, this.y + v1.y);
     return v2;
   }
 
-  // Calculate the subtraction of a vector from this
+  // Calculate the subtraction of a vector from this.
   public Vector2D subtract(Vector2D v1) {
     Vector2D v2 = new Vector2D(this.x - v1.x, this.y - v1.y);
     return v2;
   }
 
-  // Calculate this vector multiplied by a scalar
+  // Calculate this vector multiplied by a scalar.
   public Vector2D scale(double factor) {
     Vector2D v2 = new Vector2D(this.x*factor, this.y*factor);
     return v2;
   }
 
-  // Normalize the vector length
+  // Normalize the vector length.
   public Vector2D normalize() {
     Vector2D v2 = new Vector2D();
 
@@ -53,7 +53,7 @@ public class Vector2D {
     return v2;
   }   
 
-  // Calculate the dot product of a vector with this
+  // Calculate the dot product of a vector with this.
   public double dotProduct(Vector2D v2) {
     return this.x * v2.x + this.y * v2.y;
   }

@@ -21,7 +21,7 @@ public class GameController {
    */
   public void update(double dt) {
     if (model.getWorld().numberOfDrones() == 0) {
-      // Spawn a new drone
+      // Spawn a new drone.
       droneController.spawnDrone();
     }
 

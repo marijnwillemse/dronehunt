@@ -9,9 +9,9 @@ public class AppController {
   
   private InputContainer inputContainer;
 
-  public final int WIDTH = 256;		// game window width
-  public final int HEIGHT = 224;	// game window height
-  public final int VIEW_SCALE = 4;	// upscale factor
+  public final int WIDTH = 256;		// Game window width
+  public final int HEIGHT = 224;	// Game window height
+  public final int VIEW_SCALE = 4;	// Upscale factor
 
   public AppController(MainModel model, InputContainer inputContainer) {
     gameController = new GameController(this, model);
@@ -22,8 +22,8 @@ public class AppController {
    * Update the application
    */
   public void update(double dt) {
-    processInput();	// Process user input and clear
-    gameController.update(dt); // Update game logic
+    processInput();	// Process user input and clear.
+    gameController.update(dt); // Update game logic.
   }
 
   /**
@@ -31,11 +31,11 @@ public class AppController {
    * processed in game and removed.
    */
   private void processInput() {
-    // process mouse events catched in input container
+    // Process mouse events catched in input container.
     for(MouseEvent e : inputContainer.getMouseEvents()) {
       int button = e.getButton();
       
-      // adjust to view scale
+      // Adjust to view scale.
       int x = e.getX() / VIEW_SCALE;
       int y = e.getY() / VIEW_SCALE;
       

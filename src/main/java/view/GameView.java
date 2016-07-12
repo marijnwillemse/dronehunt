@@ -29,7 +29,7 @@ public class GameView extends JPanel {
   private SceneryView sceneryView;
   private HUDView hudView;
 
-  // Draw fields
+  // Drawing fields
   private int gameWidth;
   private int gameHeight;
   private int scale;
@@ -61,7 +61,7 @@ public class GameView extends JPanel {
    * Prevents flickering and keeps paintComponent() simple.
    */
   public void render(double t)
-  // Draw the current frame to an image buffer
+  // Draw the current frame to an image buffer.
   {
     if (bufferImage == null) { // Create the buffer
       bufferImage = createImage(gameWidth, gameHeight);
@@ -74,7 +74,7 @@ public class GameView extends JPanel {
       }
     }
 
-    // Draw all game elements to the buffer image
+    // Draw all game elements to the buffer image.
     drawBackground();
     sceneryView.drawBackground(context);
     drawUnits(t, context);

@@ -21,11 +21,16 @@ public class MainView {
 
   public void createAndShowGUI(int width, int height, int viewScale) {
     /* Test to confirm this thread is running as the EDT */
-    if (javax.swing.SwingUtilities.isEventDispatchThread()) { System.out.println("GUI creation is running on the EDT"); }
+    if (javax.swing.SwingUtilities.isEventDispatchThread()) {
+      System.out.println("GUI creation is running on the EDT");
+    }
 
-    app = new JFrame("Drone Hunt");					    // Create the main game frame
-    app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exit application when closed
-    app.setLocationByPlatform(true); 					// Position frame at platform preference
+    // Create the main game frame
+    app = new JFrame("Drone Hunt");
+    // Exit application when closed
+    app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // Position frame at platform preference
+    app.setLocationByPlatform(true);
 
     // Create GUI panels
     gamePanel = new GamePanel();
@@ -35,14 +40,16 @@ public class MainView {
   }
 
   private void showMainScreen() {
-    app.getContentPane().removeAll(); // Make sure the frame is clear
+    // Make sure the frame is clear
+    app.getContentPane().removeAll();
 
     // Configure components to be assigned to regions
     gamePanel.setLayout(new BorderLayout());
 
     gamePanel.add(gameView, BorderLayout.CENTER);
 
-    app.getContentPane().add(gamePanel, "Center"); // Add panel to frame
+    // Add panel to frame
+    app.getContentPane().add(gamePanel, "Center");
 
     app.setResizable(false); // Disable window resizing
     app.pack();				 // Adjust window to contents
@@ -50,7 +57,8 @@ public class MainView {
     // for when window is resizeable, layout manager will
     // leave 10px margin for (potential) scrollbars.
 
-    app.setVisible(true);	 // Show the frame
+    // Show the frame
+    app.setVisible(true);
   }
 
   public void refresh(double t) {
@@ -61,5 +69,4 @@ public class MainView {
   public GameView getGameView() {
     return gameView;
   }
-
 }

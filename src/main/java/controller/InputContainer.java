@@ -18,7 +18,7 @@ public class InputContainer {
    * Setup listener in game view to catch events
    */
   public void setupListeners(MainView view) {
-    // catch mouse events
+    // Catch mouse events.
     view.getGameView().addMouseListener( new MouseAdapter() {
       public void mousePressed(MouseEvent e) {
         mouseEvents.add(e);

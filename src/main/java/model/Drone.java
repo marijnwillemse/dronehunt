@@ -8,7 +8,7 @@ import main.java.math.Vector2D;
 
 public class Drone {
 
-  // Basic physics mechanics are saved as vector quantities  
+  // Basic physics mechanics are saved as vector quantities.
   private Vector2D position;
   private Vector2D velocity;
 
@@ -43,7 +43,7 @@ public class Drone {
   }
 
   public Rectangle getRegion() {
-    // Calculate top left corner position
+    // Calculate top left corner position.
     int x1 = ((int) position.getX()) - xSize / 2;
     int y1 = ((int) position.getY()) - ySize / 2;
 
