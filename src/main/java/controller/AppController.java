@@ -23,7 +23,7 @@ public class AppController {
    */
   public void update(double dt) {
     processInput();	// Process user input and clear.
-    gameController.update(dt); // Update game logic.
+    gameController.update(dt); // Update general game logic.
   }
 
   /**

@@ -35,7 +35,7 @@ public class DroneController {
     drone.setPosition(position);
   }
 
-  public void update(Drone drone, double dt) {
+  public void control(Drone drone, double dt) {
     drone.getState().update(this, dt);
     if (drone.getTarget() != null) {
       steer(drone, dt);

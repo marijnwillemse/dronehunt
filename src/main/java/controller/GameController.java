@@ -25,20 +25,15 @@ public class GameController {
       droneController.spawnDrone();
     }
 
-    // Feel listener
-
-    // Move
+    // Move entities
     for (Drone drone : model.getWorld().getDrones()) {
       droneController.move(drone, dt);
     }
 
-    // Update
+    // Control entities
     for (Drone drone : model.getWorld().getDrones()) {
-      droneController.update(drone, dt);
+      droneController.control(drone, dt);
     }
-
-    // Feel force
-    // Collide
   }
 
   public void MousePressed(int button, int x, int y) {
