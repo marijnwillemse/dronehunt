@@ -9,7 +9,7 @@ public class Vector2D {
     x = y = 0.0;
   }
 
-  public Vector2D( double dX, double dY ) {
+  public Vector2D(double dX, double dY) {
     this.x = dX;
     this.y = dY;
   }

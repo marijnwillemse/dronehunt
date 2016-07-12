@@ -1,12 +1,13 @@
 package main.java.model;
 
 import java.awt.Rectangle;
+import java.util.Observable;
 
-import main.java.controller.state.EvadeState;
-import main.java.controller.state.State;
+import main.java.controller.dronestate.EvadeState;
+import main.java.controller.dronestate.State;
 import main.java.math.Vector2D;
 
-public class Drone {
+public class Drone extends Observable {
 
   // Basic physics mechanics are saved as vector quantities.
   private Vector2D position;
@@ -19,9 +20,11 @@ public class Drone {
   
   private Vector2D target;
   
-  private double swiftness; // Value by which the movement speed is derived
+  private double torque; // Value by which the movement speed is derived
   
-  public static final Rectangle HIT_BOX = new Rectangle(18, 18);
+  public static final Rectangle HIT_BOX = new Rectangle(0, -4, 18, 18);
+  
+  private boolean active = true;
   
   public Drone() {		
     position = new Vector2D(0.0, 0.0);
@@ -30,7 +33,7 @@ public class Drone {
     this.xSize = 40;
     this.ySize = 40;
     
-    swiftness = 10;
+    torque = 5000;
 
     setState(new EvadeState(this));
   }
@@ -85,18 +88,6 @@ public class Drone {
   public void setVelocity(Vector2D velocity) {
     this.velocity = velocity;
   }
-  
-  public double getMaxSpeed() {
-    return swiftness * 100;
-  }
-  
-  public double getTorque() {
-    return swiftness * 5;
-  }
-  
-  public double getBrakingPower() {
-    return swiftness * 8;
-  }
 
   public boolean hasTarget() {
     if (target == null) { return false; }
@@ -111,7 +102,22 @@ public class Drone {
 
   public Rectangle getHitArea() {
     Rectangle hitArea = HIT_BOX;
-    hitArea.setLocation((int) position.getX(), (int) position.getY());
+    hitArea.translate((int) position.getX(), (int) position.getY());
+    hitArea.translate(-(hitArea.width / 2), -(hitArea.height / 2));
     return hitArea;
+  }
+
+  public double getTorque() {
+    return torque;
+  }
+
+  public void deactivate() {
+    active = false;
+    setChanged();
+    notifyObservers(active);
+  }
+
+  public boolean isActive() {
+    return active;
   }
 }

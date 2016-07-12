@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import main.java.model.Drone;
-import main.java.model.Game;
 import main.java.model.MainModel;
 
 public class GameController {

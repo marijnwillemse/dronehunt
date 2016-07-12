@@ -145,8 +145,8 @@ public class GamePanel extends JPanel {
     List<Drone> drones = model.getWorld().getDrones();
     for (Drone drone : drones) {
       droneView.draw(t, g, drone);
-      droneView.drawVelocityVector(t, g, drone);
-      droneView.drawTarget(t, g, drone);
+//      droneView.drawVelocityVector(t, g, drone);
+//      droneView.drawTarget(t, g, drone);
     }
   }
 
@@ -169,29 +169,4 @@ public class GamePanel extends JPanel {
     catch (Exception e)
     { System.out.println("Graphics context error: "+ e); }
   }
-
-  /**
-   * Handle application and game-play related keys.
-   */
-  private void processKey(KeyEvent e) {
-    //    int keyCode = e.getKeyCode();
-    //
-    //    // Termination keys
-    //    // Listen for ESCAPE, and CTRL + W on the canvas for exiting the game.
-    //    if ((keyCode == KeyEvent.VK_ESCAPE) ||
-    //        ((keyCode == KeyEvent.VK_W) && e.isControlDown()) ) {
-    //      view.set = false;
-    //    }
-    //    
-    //    // game-play keys
-    //    if (!isPaused && !gameOver) {
-    //      if (keyCode == KeyEvent.VK_LEFT)
-    //        bat.moveLeft(); 
-    //      else if (keyCode == KeyEvent.VK_RIGHT)
-    //        bat.moveRight();
-    //      else if (keyCode == KeyEvent.VK_DOWN)
-    //        bat.stayStill();
-    //    }
-  }  // end of processKey()
-
 }

@@ -1,4 +1,4 @@
-package main.java.controller.state;
+package main.java.controller.dronestate;
 
 import main.java.controller.DroneController;
 import main.java.model.Drone;

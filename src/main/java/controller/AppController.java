@@ -14,7 +14,7 @@ public class AppController {
 
   public final int WIDTH = 256;		// Game window width
   public final int HEIGHT = 224;	// Game window height
-  public final int VIEW_SCALE = 2;	// Upscale factor
+  public final int VIEW_SCALE = 4;	// Upscale factor
   
   private boolean finished = false;
   

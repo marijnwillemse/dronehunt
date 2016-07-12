@@ -1,12 +1,11 @@
-package main.java.controller.state;
+package main.java.controller.dronestate;
 
 import main.java.controller.DroneController;
 import main.java.model.Drone;
 
-public class EndState implements State {
+public class WaitState implements State {
 
-  public EndState(Drone drone) {
-    // unit is in state of removal
+  public WaitState(Drone drone) {
   }
 
   @Override

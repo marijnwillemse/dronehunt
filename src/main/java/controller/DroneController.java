@@ -4,27 +4,37 @@ import main.java.model.World;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Observable;
+import java.util.Observer;
 
-import main.java.controller.state.TumbleState;
-import main.java.math.MathOperations;
+import main.java.controller.dronestate.HitState;
 import main.java.math.Vector2D;
 import main.java.model.Drone;
 import main.java.model.MainModel;
 
 public class DroneController {
 
-  MainModel model;
-  World world;
+  private MainModel model;
+  private World world;
+
+  private Observer inactiveObserver; 
 
   public DroneController(MainModel model) {
     this.model = model;
     this.world = model.getWorld();
+
+    inactiveObserver = new Observer() {
+      public void update(Observable obj, Object arg) {
+        System.out.println("Dead!");
+      }
+    };
   }
 
   public void spawnDrone() {
     Drone drone = new Drone();
     drone.setPosition(new Vector2D(50.0, 50.0));
     world.addDrone(drone);
+    drone.addObserver(inactiveObserver);
   }
 
   public void move(Drone drone, double dt) {
@@ -46,8 +56,6 @@ public class DroneController {
 
   /*
    * Steers the drone towards its current target.
-   * Accelerates and decelerates smoothly, taking torque, maximum speed and
-   * braking power into account.
    */
   private void steer(Drone drone, double dt) {
     double x = drone.getX();
@@ -56,12 +64,7 @@ public class DroneController {
     double targetX = drone.getTarget().getX();
     double targetY = drone.getTarget().getY();
 
-    // Calculate the magnitude of drone velocity.
-    double velocity = drone.getVelocity().length();
-
-    double maxSpeed = drone.getMaxSpeed();
     double torque = drone.getTorque();
-    double brakingPower = drone.getBrakingPower();
 
     // Calculate the distances from the drone to the target for each dimension.
     double deltaX = targetX - x;
@@ -76,17 +79,8 @@ public class DroneController {
     // the drone target and the target using Pythagoras' theorem.
     double distance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
-    // Assess the braking distance taking deceleration capability into account.
-    double brakingDistance = Math.pow(velocity, 2) / (2 * brakingPower);
-
-
-    if (distance > brakingDistance) {
-      // Still able to brake before reaching target so increase acceleration.
-      velocity = Math.min(velocity + torque * dt, maxSpeed);
-    } else {
-      // Target distance is before braking distance so decelerate.
-      velocity = Math.max(velocity - brakingPower * dt, 0);
-    }
+    // Calculate velocity by multiplying the torque by the elapsed frame time.
+    double velocity = torque * dt;
 
     // Apply velocity to drone
     drone.setVelocity(new Vector2D(velocity * cosAngle, velocity * sinAngle));
@@ -107,7 +101,7 @@ public class DroneController {
       Rectangle hitArea = drone.getHitArea();
       if (hitArea.contains(p)) {
         System.out.println("Hit!");
-        drone.setState(new TumbleState(drone));
+        drone.setState(new HitState(drone));
       }
     }
   }

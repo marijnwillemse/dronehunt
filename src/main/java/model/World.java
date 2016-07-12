@@ -11,6 +11,7 @@ public class World {
   
   // Size and location information of areas in the game
   private static Rectangle areaAir;
+  public static final int GROUND_LINE = 168;
 
   private List<Drone> drones;
 
@@ -18,7 +19,10 @@ public class World {
     drones = new ArrayList<Drone>();
     World.width = width;
     World.height = height;
-    areaAir = new Rectangle(0, 0, width, (int) (height * 0.6));
+    
+    int crop = 10;
+    areaAir = new Rectangle(crop, crop, width - (crop * 2),
+                                        (int) (height * 0.6) - (crop * 2));
   }
 
   public int numberOfDrones() {
