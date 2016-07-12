@@ -2,8 +2,10 @@ package main.java.controller;
 
 import main.java.model.World;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 
+import main.java.controller.state.TumbleState;
 import main.java.math.MathOperations;
 import main.java.math.Vector2D;
 import main.java.model.Drone;
@@ -88,7 +90,7 @@ public class DroneController {
 
     // Apply velocity to drone
     drone.setVelocity(new Vector2D(velocity * cosAngle, velocity * sinAngle));
-    
+
     if (distance < (velocity * dt)) {
       // Almost reached target so snap the drone to the target.
       // This counteracts overshoot and dt variance.
@@ -98,11 +100,15 @@ public class DroneController {
     }
   }
 
-  public void newTarget(Drone drone) {
-    Rectangle areaAir = world.getAreaAir();
-    Vector2D target = new Vector2D(
-        (double)MathOperations.randomInteger(areaAir.x, areaAir.width),
-        (double)MathOperations.randomInteger(areaAir.y, areaAir.height));
-    drone.setTarget(target);
+  public void testShot(int x, int y) {
+    Point p = new Point(x, y);
+    System.out.println("Shot!");
+    for (Drone drone : model.getWorld().getDrones()) {
+      Rectangle hitArea = drone.getHitArea();
+      if (hitArea.contains(p)) {
+        System.out.println("Hit!");
+        drone.setState(new TumbleState(drone));
+      }
+    }
   }
 }

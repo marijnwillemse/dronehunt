@@ -19,9 +19,9 @@ public class Drone {
   
   private Vector2D target;
   
-  private double maxSpeed;
-  private double torque;
-  private double brakingPower;
+  private double swiftness; // Value by which the movement speed is derived
+  
+  public static final Rectangle HIT_BOX = new Rectangle(18, 18);
   
   public Drone() {		
     position = new Vector2D(0.0, 0.0);
@@ -30,10 +30,7 @@ public class Drone {
     this.xSize = 40;
     this.ySize = 40;
     
-    maxSpeed = 100000;
-    torque = 500;
-    brakingPower = 800;
-    
+    swiftness = 10;
 
     setState(new EvadeState(this));
   }
@@ -90,15 +87,15 @@ public class Drone {
   }
   
   public double getMaxSpeed() {
-    return maxSpeed;
+    return swiftness * 100;
   }
   
   public double getTorque() {
-    return torque;
+    return swiftness * 5;
   }
   
   public double getBrakingPower() {
-    return brakingPower;
+    return swiftness * 8;
   }
 
   public boolean hasTarget() {
@@ -110,5 +107,11 @@ public class Drone {
     if (target == null) { return false; }
     if (position.distanceTo(target) < 1) { return true; }
     return false;
+  }
+
+  public Rectangle getHitArea() {
+    Rectangle hitArea = HIT_BOX;
+    hitArea.setLocation((int) position.getX(), (int) position.getY());
+    return hitArea;
   }
 }

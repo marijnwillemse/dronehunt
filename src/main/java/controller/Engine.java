@@ -7,8 +7,6 @@ public class Engine {
   private AppController app;
   private MainView view;
 
-  private boolean running;
-
   public Engine(AppController app, MainView view) {
     this.app = app;
     this.view = view;
@@ -46,9 +44,7 @@ public class Engine {
     double currentTime = timeInSeconds();
     double accumulator = 0.0;
 
-    running = true;
-
-    while (running) {
+    while (!app.isFinished()) {
       double newTime = timeInSeconds();
       double frameTime = newTime - currentTime;
       currentTime = newTime;
@@ -63,6 +59,7 @@ public class Engine {
 
       view.refresh(t);
     }
+    System.exit(0); // So window disappears.
   }
 
   private double timeInSeconds() {

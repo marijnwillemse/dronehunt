@@ -6,17 +6,18 @@ import java.util.List;
 
 public class World {
 
-  private int score = 0;
-  private int width;
-  private int height;
-  private Rectangle areaAir;
+  private static int width;
+  private static int height;
+  
+  // Size and location information of areas in the game
+  private static Rectangle areaAir;
 
   private List<Drone> drones;
 
   public World(int width, int height) {
     drones = new ArrayList<Drone>();
-    this.width = width;
-    this.height = height;
+    World.width = width;
+    World.height = height;
     areaAir = new Rectangle(0, 0, width, (int) (height * 0.6));
   }
 
@@ -31,14 +32,6 @@ public class World {
   public List<Drone> getDrones() {
     return drones;
   }
-  
-  public void changeScore(int amount) {
-    score += amount;
-  }
-  
-  public int getScore() {
-    return score;
-  }
 
   public int getWidth() {
     return width;
@@ -48,7 +41,7 @@ public class World {
     return height;
   }
   
-  public Rectangle getAreaAir() {
+  public static Rectangle getAreaAir() {
     return areaAir;
   }
 }

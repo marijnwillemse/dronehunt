@@ -1,7 +1,5 @@
 package main.java.view;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
 
 import main.java.model.MainModel;
@@ -10,13 +8,15 @@ public class MainView {
 
   private MainModel model;
 
-  private JFrame app;			 // JFrame in which the application is displayed
+  private JFrame app; // JFrame in which the application is displayed
 
-  private GamePanel gamePanel;	 // Game screen component panel
-  private GameView gameView;	 // Game view drawing panel
+  private GamePanel gamePanel; // Game view drawing panel
+
+  private InputContainer inputContainer; // Stores user input events
 
   public MainView(MainModel model) {
     this.model = model;
+    inputContainer = new InputContainer();
   }
 
   public void createAndShowGUI(int width, int height, int viewScale) {
@@ -33,8 +33,7 @@ public class MainView {
     app.setLocationByPlatform(true);
 
     // Create GUI panels
-    gamePanel = new GamePanel();
-    gameView = new GameView(model, width, height, viewScale);
+    gamePanel = new GamePanel(model, inputContainer, width, height, viewScale);
 
     showMainScreen(); // Initialize the main screen
   }
@@ -42,11 +41,6 @@ public class MainView {
   private void showMainScreen() {
     // Make sure the frame is clear
     app.getContentPane().removeAll();
-
-    // Configure components to be assigned to regions
-    gamePanel.setLayout(new BorderLayout());
-
-    gamePanel.add(gameView, BorderLayout.CENTER);
 
     // Add panel to frame
     app.getContentPane().add(gamePanel, "Center");
@@ -62,11 +56,15 @@ public class MainView {
   }
 
   public void refresh(double t) {
-    gameView.render(t);     // Renders the game to an image buffer
-    gameView.paintBuffer(); // Draws the buffer onto the screen
+    gamePanel.render(t);     // Renders the game to an image buffer
+    gamePanel.paintBuffer(); // Draws the buffer onto the screen
   }
 
-  public GameView getGameView() {
-    return gameView;
+  public GamePanel getGamePanel() {
+    return gamePanel;
+  }
+
+  public InputContainer getInputContainer() {
+    return inputContainer;
   }
 }

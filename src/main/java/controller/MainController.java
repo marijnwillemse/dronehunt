@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.model.MainModel;
+import main.java.view.InputContainer;
 import main.java.view.MainView;
 
 public class MainController {
@@ -10,7 +11,6 @@ public class MainController {
 
   private AppController app;
   private Engine engine;
-  private InputContainer inputContainer;
 
   public MainController(MainModel model, MainView view) {
     this.view = view;
@@ -21,11 +21,9 @@ public class MainController {
    * Initialize essential objects and start game engine
    */
   public void run() {
-    inputContainer = new InputContainer();
-    app = new AppController(model, inputContainer);
+    app = new AppController(model, view);
     engine = new Engine(app, view);
     view.createAndShowGUI(app.WIDTH, app.HEIGHT, app.VIEW_SCALE);
-    inputContainer.setupListeners(view);
     engine.init();
   }
 }
