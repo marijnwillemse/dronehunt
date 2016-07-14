@@ -1,5 +1,7 @@
 package main.java.controller;
 
+import java.util.List;
+
 import main.java.model.Drone;
 import main.java.model.MainModel;
 
@@ -18,11 +20,9 @@ public class GameController {
    * Update game
    */
   public void update(double dt) {
-    if (model.getWorld().numberOfDrones() == 0) {
-      // Spawn a new drone.
-      droneController.spawnDrone();
-    }
-
+    // Collect inactive entities
+    collect();
+    
     // Move entities
     for (Drone drone : model.getWorld().getDrones()) {
       droneController.move(drone, dt);
@@ -30,14 +30,33 @@ public class GameController {
 
     // Control game
     control();
+    
     // Control entities
     for (Drone drone : model.getWorld().getDrones()) {
       droneController.control(drone, dt);
     }
   }
+  
+  /**
+   * Collects inactive entities in the world and properly removes them from
+   * the game.
+   */
+  private void collect() {
+    List<Drone> drones = model.getWorld().getDrones();
+    for (int index = 0; index < drones.size(); index++) {
+      Drone drone = drones.get(index);
+      if (!drone.isActive()) {
+        droneController.removeObserver(drone);
+        model.getWorld().removeDrone(index);
+      }
+    }
+  }
 
   private void control() {
-
+    if (model.getWorld().numberOfDrones() == 0) {
+      // Spawn a new drone.
+      droneController.spawnDrone();
+    }
   }
 
   public void MousePressed(int button, int x, int y) {

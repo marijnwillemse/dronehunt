@@ -34,7 +34,15 @@ public class DroneController {
     Drone drone = new Drone();
     drone.setPosition(new Vector2D(50.0, 50.0));
     world.addDrone(drone);
+    addObserver(drone);
+  }
+  
+  private void addObserver(Drone drone) {
     drone.addObserver(inactiveObserver);
+  }
+  
+  public void removeObserver(Drone drone) {
+    drone.deleteObserver(inactiveObserver);
   }
 
   public void move(Drone drone, double dt) {

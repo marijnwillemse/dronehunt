@@ -48,4 +48,8 @@ public class World {
   public static Rectangle getAreaAir() {
     return areaAir;
   }
+
+  public void removeDrone(int index) {
+    drones.remove(index);
+  }
 }
