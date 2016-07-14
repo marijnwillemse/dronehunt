@@ -3,7 +3,7 @@ package main.java.model;
 import java.awt.Rectangle;
 import java.util.Observable;
 
-import main.java.controller.dronestate.EvadeState;
+import main.java.controller.dronestate.IdleState;
 import main.java.controller.dronestate.State;
 import main.java.math.Vector2D;
 
@@ -35,7 +35,7 @@ public class Drone extends Observable {
     
     torque = 5000;
 
-    setState(new EvadeState(this));
+    setState(new IdleState(this));
   }
   
   public Vector2D getPosition() {
@@ -101,7 +101,7 @@ public class Drone extends Observable {
   }
 
   public Rectangle getHitArea() {
-    Rectangle hitArea = HIT_BOX;
+    Rectangle hitArea = new Rectangle(HIT_BOX);
     hitArea.translate((int) position.getX(), (int) position.getY());
     hitArea.translate(-(hitArea.width / 2), -(hitArea.height / 2));
     return hitArea;
