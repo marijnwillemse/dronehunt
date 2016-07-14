@@ -13,6 +13,8 @@ public class MainView {
   private GamePanel gamePanel; // Game view drawing panel
 
   private InputContainer inputContainer; // Stores user input events
+  
+  private static boolean debug = false;
 
   public MainView(MainModel model) {
     this.model = model;
@@ -56,8 +58,7 @@ public class MainView {
   }
 
   public void refresh(double t) {
-    gamePanel.render(t);     // Renders the game to an image buffer
-    gamePanel.paintBuffer(); // Draws the buffer onto the screen
+    gamePanel.refresh(t);
   }
 
   public GamePanel getGamePanel() {
@@ -66,5 +67,13 @@ public class MainView {
 
   public InputContainer getInputContainer() {
     return inputContainer;
+  }
+  
+  public static void setDebug(boolean b) {
+    debug = b;
+  }
+  
+  public static boolean getDebug() {
+    return debug;
   }
 }

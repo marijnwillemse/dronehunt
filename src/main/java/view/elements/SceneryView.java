@@ -5,6 +5,8 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
+import main.java.view.ImageLoader;
+
 @SuppressWarnings("serial")
 public class SceneryView extends JPanel {
 

@@ -14,11 +14,11 @@ public class AppController {
   private MainView view;
 
   // Game window dimensions, derived from world dimensions.
-  public final int WIDTH = World.WIDTH;
-  public final int HEIGHT = World.HEIGHT;
+  private final static int WIDTH = World.WIDTH;
+  private final static int HEIGHT = World.HEIGHT;
   
-  public final int VIEW_SCALE = 4;	// Upscale factor
-  
+  private static int viewScale = 4;	// Upscale factor
+
   private boolean finished = false;
   
   public AppController(MainModel model, MainView view) {
@@ -47,8 +47,8 @@ public class AppController {
       int button = e.getButton();
       
       // Adjust to view scale.
-      int x = e.getX() / VIEW_SCALE;
-      int y = e.getY() / VIEW_SCALE;
+      int x = e.getX() / viewScale;
+      int y = e.getY() / viewScale;
       
       gameController.MousePressed(button, x, y);
     }
@@ -67,5 +67,17 @@ public class AppController {
 
   public boolean isFinished() {
     return finished;
+  }
+
+  public static int getWidth() {
+    return WIDTH;
+  }
+
+  public static int getHeight() {
+    return HEIGHT;
+  }
+  
+  public static int getViewScale() {
+    return viewScale;
   }
 }

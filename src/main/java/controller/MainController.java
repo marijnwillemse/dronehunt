@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import main.java.model.MainModel;
-import main.java.view.InputContainer;
 import main.java.view.MainView;
 
 public class MainController {
@@ -23,7 +22,8 @@ public class MainController {
   public void run() {
     app = new AppController(model, view);
     engine = new Engine(app, view);
-    view.createAndShowGUI(app.WIDTH, app.HEIGHT, app.VIEW_SCALE);
+    view.createAndShowGUI(AppController.getWidth(), AppController.getHeight(),
+        AppController.getViewScale());
     engine.init();
   }
 }

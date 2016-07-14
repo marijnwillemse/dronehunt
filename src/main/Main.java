@@ -31,6 +31,9 @@ public class Main {
         controller.run();
       }
     });
+    
+    // Set debug mode to on or off
+    MainView.setDebug(false);
   }
 
 }

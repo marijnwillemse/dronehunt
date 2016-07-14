@@ -1,10 +1,10 @@
-package main.java.view.elements;
+package main.java.view;
 
 import javax.swing.ImageIcon;
 
 public class ImageLoader {
 
-  protected ImageIcon loadImageIcon(String imageName) {
+  public ImageIcon loadImageIcon(String imageName) {
     imageName = "/main/resources/images/" + imageName;
     java.net.URL imgUrl = getClass().getResource(imageName);
     ImageIcon icon = null;

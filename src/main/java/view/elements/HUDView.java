@@ -6,6 +6,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import main.java.model.Game;
+import main.java.view.ImageLoader;
 
 @SuppressWarnings("serial")
 public class HUDView extends JPanel {
@@ -44,5 +45,10 @@ public class HUDView extends JPanel {
   
   public void drawBulletInfo(Graphics g, Game game) {
     g.drawImage(imageBoxBullet, 17, 183, this);
+    int numberOfBullets = game.getBullets();
+    int offset = 13;
+    for (int i = 0; i < numberOfBullets; i++) {
+      g.drawImage(imageBullet, 22 + offset * i, 187, this);
+    }
   }
 }

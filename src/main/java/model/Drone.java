@@ -6,6 +6,7 @@ import java.util.Observable;
 import main.java.controller.dronestate.IdleState;
 import main.java.controller.dronestate.State;
 import main.java.math.Vector2D;
+import main.java.view.Sprite;
 
 public class Drone extends Observable {
 
@@ -25,6 +26,8 @@ public class Drone extends Observable {
   public static final Rectangle HIT_BOX = new Rectangle(0, -4, 18, 18);
   
   private boolean active = true;
+  
+  private Sprite sprite;
   
   public Drone() {		
     position = new Vector2D(0.0, 0.0);

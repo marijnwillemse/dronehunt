@@ -7,6 +7,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import main.java.model.Drone;
+import main.java.view.ImageLoader;
 
 @SuppressWarnings("serial")
 public class DroneView extends JPanel {

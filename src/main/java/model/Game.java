@@ -7,6 +7,8 @@ public class Game {
   private int score = 0;
   
   private int bullets;
+  
+  private boolean reloading = false;
 
   public Game(World world) {
     this.world = world;
@@ -31,5 +33,18 @@ public class Game {
   
   public int getBullets() {
     return bullets;
+  }
+
+  public void startReloading() {
+    reloading = true;
+  }
+
+  public boolean isReloading() {
+    return reloading;
+  }
+
+  public void reload() {
+    reloading = false;
+    setBullets(2);
   }
 }

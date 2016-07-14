@@ -3,16 +3,21 @@ package main.java.controller;
 import java.util.List;
 
 import main.java.model.Drone;
+import main.java.model.Game;
 import main.java.model.MainModel;
 
 public class GameController {
 
   private MainModel model;
+  private Game game;
   private DroneController droneController;
+  private double reloadCounter;
+  private double reloadTime = 1.0;
 
   public GameController(MainModel model) {
     this.model = model;
     model.init();
+    game = model.getGame();
     droneController = new DroneController(model);
   }
 
@@ -29,7 +34,7 @@ public class GameController {
     }
 
     // Control game
-    control();
+    control(dt);
     
     // Control entities
     for (Drone drone : model.getWorld().getDrones()) {
@@ -52,17 +57,30 @@ public class GameController {
     }
   }
 
-  private void control() {
+  private void control(double dt) {
     if (model.getWorld().numberOfDrones() == 0) {
       // Spawn a new drone.
       droneController.spawnDrone();
+    }
+    
+    if (game.getBullets() == 0 && !game.isReloading()) {
+      game.startReloading();
+    }
+    
+    if (game.isReloading()) {
+      reloadCounter += dt;
+      if (reloadCounter > reloadTime) {
+        game.reload();
+        reloadCounter = 0;
+      }
     }
   }
 
   public void MousePressed(int button, int x, int y) {
     if (button == 1) { // Left button clicked
-      if (model.getGame().getBullets() > 0) {
+      if (game.getBullets() > 0) {
         droneController.testShot(x, y);
+        game.changeBullets(-1);
       }
     }
 

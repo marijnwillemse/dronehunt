@@ -20,8 +20,8 @@ public class DeployState implements State {
 
   @Override
   public void update(DroneController droneController, double dt) {
-    if(drone.getY() < 0) {
-      drone.setState(new EndState(drone));
+    if(drone.hasReachedTarget()) {
+      drone.setState(new EvadeState(drone));
     }
   }
   
