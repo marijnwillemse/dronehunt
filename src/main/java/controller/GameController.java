@@ -10,9 +10,9 @@ public class GameController {
   private MainModel model;
   private DroneController droneController;
 
-  public GameController(AppController appController, MainModel model) {
+  public GameController(MainModel model) {
     this.model = model;
-    model.init(appController.WIDTH, appController.HEIGHT);
+    model.init();
     droneController = new DroneController(model);
   }
 

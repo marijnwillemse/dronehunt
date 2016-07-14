@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import main.java.model.MainModel;
+import main.java.model.World;
 import main.java.view.InputContainer;
 import main.java.view.MainView;
 
@@ -12,14 +13,16 @@ public class AppController {
   private GameController gameController;
   private MainView view;
 
-  public final int WIDTH = 256;		// Game window width
-  public final int HEIGHT = 224;	// Game window height
+  // Game window dimensions, derived from world dimensions.
+  public final int WIDTH = World.WIDTH;
+  public final int HEIGHT = World.HEIGHT;
+  
   public final int VIEW_SCALE = 4;	// Upscale factor
   
   private boolean finished = false;
   
   public AppController(MainModel model, MainView view) {
-    gameController = new GameController(this, model);
+    gameController = new GameController(model);
     this.view = view;
   }
 

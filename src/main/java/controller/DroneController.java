@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.util.Observable;
 import java.util.Observer;
 
+import main.java.controller.dronestate.DeployState;
 import main.java.controller.dronestate.HitState;
 import main.java.math.Vector2D;
 import main.java.model.Drone;
@@ -35,6 +36,7 @@ public class DroneController {
     drone.setPosition(new Vector2D(50.0, 50.0));
     world.addDrone(drone);
     addObserver(drone);
+    drone.setState(new DeployState(drone));
   }
   
   private void addObserver(Drone drone) {

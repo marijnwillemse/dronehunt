@@ -106,6 +106,7 @@ public class GamePanel extends JPanel {
     drawUnits(t, context);
     sceneryView.drawForeground(context);
     drawHUD(context);
+    drawDebugOverlay(t, context);
   }
 
   private void drawBackground() {
@@ -145,8 +146,14 @@ public class GamePanel extends JPanel {
     List<Drone> drones = model.getWorld().getDrones();
     for (Drone drone : drones) {
       droneView.draw(t, g, drone);
-//      droneView.drawVelocityVector(t, g, drone);
-//      droneView.drawTarget(t, g, drone);
+    }
+  }
+
+  private void drawDebugOverlay(double t, Graphics g) {
+    List<Drone> drones = model.getWorld().getDrones();
+    for (Drone drone : drones) {
+      droneView.drawVelocityVector(t, g, drone);
+      droneView.drawTarget(t, g, drone);
     }
   }
 

@@ -25,8 +25,8 @@ public class MainModel {
     return game;
   }
 
-  public void init(int width, int height) {
-    world = new World(width, height);
+  public void init() {
+    world = new World();
     newGame();
   }
 }

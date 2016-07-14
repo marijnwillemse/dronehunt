@@ -11,7 +11,6 @@ public class TumbleState implements State {
 
   public TumbleState(Drone drone) {
     this.drone = drone;
-    
     Vector2D position = drone.getPosition();
     drone.setTarget(new Vector2D(position.getX(), World.GROUND_LINE));
   }
