@@ -58,7 +58,9 @@ public class GameRenderer {
     methods.drawBackdrop(g);
     methods.drawDrones(g, model.getWorld().getDrones());
     methods.drawForeground(g);
-    methods.drawBullets(g, model.getGame().getBullets());
+    methods.drawBulletHUD(g, model.getGame().getBullets());
+    methods.drawLifeHUD(g, model.getGame().getLife());
+
     methods.drawFramerate(g, frameCounter.getFramesPerSecond());
     if (MainView.getDebug()) {
       methods.drawDebug(g, model.getWorld().getDrones());
@@ -138,16 +140,27 @@ public class GameRenderer {
       g.fillRect(0, 0, App.WIDTH, App.HEIGHT);
     }
 
-    public void drawBullets(Graphics g, int bullets) {
-      int x = 40;
-      int y = 192;
-      renderSprite(sprites.get("box.bullet"), g, x, y);
+    public void drawBulletHUD(Graphics g, int bullets) {
+      int x = 8;
+      int y = 194;
+      
+      // String
+      int fontSize = 12;
+      g.setFont(new Font("Courier", Font.PLAIN, fontSize));
+      g.setColor(Color.white);
+      g.drawString("AMMO", x, y);
+      
+      x += 41;
+      y -= 3;
+
       int numberOfBullets = model.getGame().getBullets();
       int offset = 13;
+      
       for (int i = 0; i < numberOfBullets; i++) {
-        x = 27 + offset * i; y = 192;
-        renderSprite(sprites.get("bullet"), g, x, y);
+        int x2 = x + offset * i;
+        renderSprite(sprites.get("bullet"), g, x2, y);
       }
+
     }
 
     public void drawForeground(Graphics g) {
@@ -173,5 +186,25 @@ public class GameRenderer {
       g.drawString(string, 10, 20);
     }
 
+    public void drawLifeHUD(Graphics g, int life) {
+      int x = 8;
+      int y = 214;
+      
+      // String
+      int fontSize = 12;
+      g.setFont(new Font("Courier", Font.PLAIN, fontSize));
+      g.setColor(Color.white);
+      g.drawString("LIFE", x, y);
+      
+      x += 37;
+      y -= 3;
+      
+      g.setColor(GameColors.POMEGRANATE.getRGB());
+
+      for (int i = 0; i < life; i++) {
+        int x2 = x + i * 3;
+        g.fillRect(x2, y - 3, 2, 6);
+      }
+    }
   }
 }
