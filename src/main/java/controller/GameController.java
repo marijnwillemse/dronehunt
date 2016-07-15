@@ -16,7 +16,6 @@ public class GameController {
 
   public GameController(MainModel model) {
     this.model = model;
-    model.init();
     game = model.getGame();
     droneController = new DroneController(model);
   }

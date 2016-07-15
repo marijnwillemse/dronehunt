@@ -6,7 +6,8 @@ public class MainModel {
   private Game game;
 
   public MainModel() {
-
+    world = new World();
+    game = new Game();
   }
 
   public World getWorld() {
@@ -17,16 +18,12 @@ public class MainModel {
     this.world = world;
   }
 
-  public void newGame() {
-    this.game = new Game();
+  public Game newGame() {
+    game = new Game();
+    return game;
   }
 
   public Game getGame() {
     return game;
-  }
-
-  public void init() {
-    world = new World();
-    newGame();
   }
 }

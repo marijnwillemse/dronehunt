@@ -2,22 +2,34 @@ package main.java.model;
 
 public class Game {
 
-  private int score = 0;
+  public final static int MAX_LIFE = 10;
+  public final static int MAX_BULLETS = 2;
   
+  private int score;
+  private int life;
   private int bullets;
   
   private boolean reloading = false;
 
   public Game() {
-    this.bullets = 2;
+    life = MAX_LIFE;
+    bullets = MAX_BULLETS;
   }
-
+  
   public void changeScore(int amount) {
     score += amount;
   }
 
   public int getScore() {
     return score;
+  }
+  
+  public int getLife() {
+    return life;
+  }
+  
+  public void changeLife(int amount) {
+    life += amount;
   }
   
   public void changeBullets(int amount) {
@@ -42,6 +54,6 @@ public class Game {
 
   public void reload() {
     reloading = false;
-    setBullets(2);
+    setBullets(MAX_BULLETS);
   }
 }
