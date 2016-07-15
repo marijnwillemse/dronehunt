@@ -8,20 +8,20 @@ import main.java.model.World;
 import main.java.view.InputContainer;
 import main.java.view.MainView;
 
-public class AppController {
+public class App {
   
   private GameController gameController;
   private MainView view;
 
   // Game window dimensions, derived from world dimensions.
-  private final static int WIDTH = World.WIDTH;
-  private final static int HEIGHT = World.HEIGHT;
+  public final static int WIDTH = World.WIDTH;
+  public final static int HEIGHT = World.HEIGHT;
   
   private static int viewScale = 4;	// Upscale factor
 
   private boolean finished = false;
   
-  public AppController(MainModel model, MainView view) {
+  public App(MainModel model, MainView view) {
     gameController = new GameController(model);
     this.view = view;
   }
@@ -69,14 +69,6 @@ public class AppController {
     return finished;
   }
 
-  public static int getWidth() {
-    return WIDTH;
-  }
-
-  public static int getHeight() {
-    return HEIGHT;
-  }
-  
   public static int getViewScale() {
     return viewScale;
   }

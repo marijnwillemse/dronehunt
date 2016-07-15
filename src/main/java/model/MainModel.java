@@ -18,7 +18,7 @@ public class MainModel {
   }
 
   public void newGame() {
-    this.game = new Game(world);
+    this.game = new Game();
   }
 
   public Game getGame() {

@@ -6,7 +6,6 @@ import java.util.Observable;
 import main.java.controller.dronestate.IdleState;
 import main.java.controller.dronestate.State;
 import main.java.math.Vector2D;
-import main.java.view.Sprite;
 
 public class Drone extends Observable {
 

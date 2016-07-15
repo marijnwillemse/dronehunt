@@ -5,58 +5,33 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import main.java.controller.AppController;
+import main.java.controller.App;
 import main.java.math.Vector2D;
 import main.java.model.Drone;
-import main.java.model.Game;
 import main.java.model.MainModel;
-import main.java.model.World;
-import main.java.view.elements.DroneView;
-import main.java.view.elements.FrameCounter;
-import main.java.view.elements.HUDView;
-import main.java.view.elements.SceneryView;
 
 public class GameRenderer {
 
   private MainModel model;
-  private FrameCounter frameCounter;
 
   private Graphics g;
   private BufferedImage bufferedImage;
   private SpriteLoader spriteLoader;
-
-  private DroneView droneView;
-  private SceneryView sceneryView;
-  private HUDView hudView;
+  private FrameCounter frameCounter;
 
   private Map<String, Sprite> sprites = new HashMap<String, Sprite>();
-
-  private int scale;
-  private int width;
-  private int height;
 
   public GameRenderer(MainModel model) {
     this.model = model;
     spriteLoader = new SpriteLoader();
     loadSprites();
-
     frameCounter = new FrameCounter();
 
-    droneView = new DroneView();
-    sceneryView = new SceneryView();
-    hudView = new HUDView();
-
-    scale = AppController.getViewScale();
-    width = AppController.getWidth();
-    height = AppController.getHeight();
-
-    bufferedImage = new BufferedImage(width, height,
+    bufferedImage = new BufferedImage(App.WIDTH, App.HEIGHT,
         BufferedImage.TYPE_INT_ARGB);
   }
 
@@ -78,38 +53,16 @@ public class GameRenderer {
     g = bufferedImage.getGraphics();
 
     // Draw all game elements to the buffer image.
-    fillBackground(g, GameColors.DBLUE.getRGB());
-
-    int x; int y;
-    x = y = 0;
-    renderSprite(sprites.get("background.png"), t, g, x, y);
-    for (Drone drone : model.getWorld().getDrones()) {
-      Vector2D position = drone.getPosition();
-      renderSprite(sprites.get("quadcopter.1.png"), t, g, (int) position.getX(),
-          (int) position.getY());
-    }
-    renderSprite(sprites.get("foreground.png"), t, g, x, y);
-    
-    x = 17; y = 183;
-    renderSprite(sprites.get("box.bullet.png"), t, g, x, y);
-    int numberOfBullets = model.getGame().getBullets();
-    int offset = 13;
-    for (int i = 0; i < numberOfBullets; i++) {
-      x = 22 + offset * i; y = 187;
-      renderSprite(sprites.get("bullet.png"), t, g, x, y);
-    }
+    DrawMethods methods = new DrawMethods();
+    methods.fillBackground(g, GameColors.DBLUE.getRGB());
+    methods.drawBackdrop(g);
+    methods.drawDrones(g, model.getWorld().getDrones());
+    methods.drawForeground(g);
+    methods.drawBullets(g, model.getGame().getBullets());
+    methods.drawFramerate(g, frameCounter.getFramesPerSecond());
     if (MainView.getDebug()) {
-//      droneView.drawDebugOverlay(t, g);
+      methods.drawDebug(g, model.getWorld().getDrones());
     }
-  }
-
-  private void fillBackground(Graphics context, Color color) {
-    context.setColor(color);
-    context.fillRect(0, 0, width, height);
-  }
-
-  private void renderSprite(Sprite sprite, double t, Graphics g, int x, int y) {
-    g.drawImage(sprite.getImage(), x, y, null);
   }
 
   /** 
@@ -118,7 +71,10 @@ public class GameRenderer {
   public void paintBuffer(Graphics g) {
     try {
       if ((g != null) && (bufferedImage != null)) {
-        g.drawImage(bufferedImage, 0, 0, width*scale, height*scale, null);
+        int viewScale = App.getViewScale();
+        int adjustedWidth = App.WIDTH * viewScale;
+        int adjustedHeight = App.HEIGHT * viewScale;
+        g.drawImage(bufferedImage, 0, 0, adjustedWidth, adjustedHeight, null);
       }
       Toolkit.getDefaultToolkit().sync(); // Syncs the display on some systems
       g.dispose();
@@ -126,5 +82,96 @@ public class GameRenderer {
     catch (Exception e) {
       System.out.println("Graphics context error: " + e);
     }
+  }
+
+  private void renderSprite(Sprite sprite, Graphics g, int x, int y) {
+    x -= sprite.getWidth() / 2;
+    y -= sprite.getHeight() / 2;
+    g.drawImage(sprite.getImage(), x, y, null);
+  }
+
+  private void setFontToDefault(Graphics g) {
+    g.setFont(new Font("Courier", Font.PLAIN, 12));
+    g.setColor(Color.white);
+  }
+
+  private class DrawMethods {
+
+    private int xCenter() {
+      return App.WIDTH / 2;
+    }
+
+    public void drawDebug(Graphics g, List<Drone> drones) {
+      for (Drone drone : drones) {
+        drawVelocityVector(g, drone);
+        drawTarget(g, drone);
+      }
+    }
+
+    public void drawVelocityVector(Graphics g, Drone drone) {
+      g.setColor(Color.green);
+      g.drawLine((int)drone.getX(), (int)drone.getY(),
+          (int)(drone.getX() + drone.getVelocity().getX()/10),
+          (int)(drone.getY() + drone.getVelocity().getY()/10));
+    }
+
+    public void drawTarget(Graphics g, Drone drone) {
+      if (drone.hasTarget()) {
+        g.setColor((drone.hasReachedTarget() ? Color.blue : Color.red));
+        g.drawLine((int)drone.getTarget().getX()-2,
+            (int)drone.getTarget().getY()-2,
+            (int)drone.getTarget().getX()+2,
+            (int)drone.getTarget().getY()+2);
+        g.drawLine((int)drone.getTarget().getX()+2,
+            (int)drone.getTarget().getY()-2,
+            (int)drone.getTarget().getX()-2,
+            (int)drone.getTarget().getY()+2);
+      }
+    }
+
+    private int yCenter() {
+      return App.HEIGHT / 2;
+    }
+
+    public void fillBackground(Graphics g, Color color) {
+      g.setColor(color);
+      g.fillRect(0, 0, App.WIDTH, App.HEIGHT);
+    }
+
+    public void drawBullets(Graphics g, int bullets) {
+      int x = 40;
+      int y = 192;
+      renderSprite(sprites.get("box.bullet"), g, x, y);
+      int numberOfBullets = model.getGame().getBullets();
+      int offset = 13;
+      for (int i = 0; i < numberOfBullets; i++) {
+        x = 27 + offset * i; y = 192;
+        renderSprite(sprites.get("bullet"), g, x, y);
+      }
+    }
+
+    public void drawForeground(Graphics g) {
+      renderSprite(sprites.get("foreground"), g, xCenter(), yCenter());
+    }
+
+    public void drawDrones(Graphics g, List<Drone> drones) {
+      for (Drone drone : drones) {
+        Vector2D position = drone.getPosition();
+        renderSprite(sprites.get("quadcopter.1"), g, (int) position.getX(),
+            (int) position.getY());
+      }
+    }
+
+    public void drawBackdrop(Graphics g) {
+      renderSprite(sprites.get("background"), g, xCenter(), yCenter());
+    }
+
+    public void drawFramerate(Graphics g, String string) {
+      int fontSize = 12;
+      g.setFont(new Font("Courier", Font.PLAIN, fontSize));
+      g.setColor(Color.white);
+      g.drawString(string, 10, 20);
+    }
+
   }
 }

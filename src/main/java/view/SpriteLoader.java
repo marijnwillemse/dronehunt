@@ -1,16 +1,11 @@
 package main.java.view;
 
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-
-import main.java.model.MainModel;
 
 public class SpriteLoader {
 
@@ -18,14 +13,14 @@ public class SpriteLoader {
       new HashMap<String, String[]>();
   
   static {
-    imageInfo.put("quadcopter.1.png", new String[] {"/main/resources/images/quadcopter.1.png", "62", "29"});
-    imageInfo.put("quadcopter.2.png", new String[] {"/main/resources/images/quadcopter.2.png", "62", "29"});
-    imageInfo.put("hexacopter.1.png", new String[] {"/main/resources/images/hexacopter.1.png", "62", "29"});
-    imageInfo.put("hexacopter.2.png", new String[] {"/main/resources/images/hexacopter.2.png", "62", "29"});
-    imageInfo.put("bullet.png", new String[] {"/main/resources/images/bullet.png", "10", "10"});
-    imageInfo.put("foreground.png", new String[] {"/main/resources/images/foreground.png", "256", "224"});
-    imageInfo.put("background.png", new String[] {"/main/resources/images/background.png", "256", "224"});
-    imageInfo.put("box.bullet.png", new String[] {"/main/resources/images/box.bullet.png", "46", "18"});
+    imageInfo.put("quadcopter.1", new String[] {"/main/resources/images/quadcopter.1.png", "62", "29"});
+    imageInfo.put("quadcopter.2", new String[] {"/main/resources/images/quadcopter.2.png", "62", "29"});
+    imageInfo.put("hexacopter.1", new String[] {"/main/resources/images/hexacopter.1.png", "62", "29"});
+    imageInfo.put("hexacopter.2", new String[] {"/main/resources/images/hexacopter.2.png", "62", "29"});
+    imageInfo.put("bullet", new String[] {"/main/resources/images/bullet.png", "10", "10"});
+    imageInfo.put("foreground", new String[] {"/main/resources/images/foreground.png", "256", "224"});
+    imageInfo.put("background", new String[] {"/main/resources/images/background.png", "256", "224"});
+    imageInfo.put("box.bullet", new String[] {"/main/resources/images/box.bullet.png", "46", "18"});
   }
 
   public Sprite createSprite(String key) {
@@ -68,10 +63,7 @@ public class SpriteLoader {
 //  }
 //
 //
-//  private void resetFont(Graphics g, int fontSize) {
-//    g.setFont(new Font("Courier", Font.PLAIN, fontSize));
-//    g.setColor(Color.white);
-//  }
+
 //
 //
 //  private void drawUnits(double t, Graphics g) {

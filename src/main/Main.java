@@ -33,7 +33,7 @@ public class Main {
     });
     
     // Set debug mode to on or off
-    MainView.setDebug(false);
+    MainView.setDebug(true);
   }
 
 }

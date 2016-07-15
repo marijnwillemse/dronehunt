@@ -1,4 +1,4 @@
-package main.java.view.elements;
+package main.java.view;
 
 public class FrameCounter {
   private long nextSecond = System.nanoTime() + 1000000000;

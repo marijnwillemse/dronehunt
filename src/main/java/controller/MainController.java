@@ -8,7 +8,7 @@ public class MainController {
   private MainView view;
   private MainModel model;
 
-  private AppController app;
+  private App app;
   private Engine engine;
 
   public MainController(MainModel model, MainView view) {
@@ -20,10 +20,10 @@ public class MainController {
    * Initialize essential objects and start game engine
    */
   public void run() {
-    app = new AppController(model, view);
+    app = new App(model, view);
     engine = new Engine(app, view);
-    view.createAndShowGUI(AppController.getWidth(), AppController.getHeight(),
-        AppController.getViewScale());
+    view.createAndShowGUI(App.WIDTH, App.HEIGHT,
+        App.getViewScale());
     engine.init();
   }
 }

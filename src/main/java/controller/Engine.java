@@ -4,10 +4,10 @@ import main.java.view.MainView;
 
 public class Engine {
 
-  private AppController app;
+  private App app;
   private MainView view;
 
-  public Engine(AppController app, MainView view) {
+  public Engine(App app, MainView view) {
     this.app = app;
     this.view = view;
   }
