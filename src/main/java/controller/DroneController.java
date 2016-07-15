@@ -17,12 +17,13 @@ public class DroneController {
 
   private MainModel model;
   private World world;
-
-  private Observer inactiveObserver; 
+  private Observer inactiveObserver;
+  private Brain brain;
 
   public DroneController(MainModel model) {
     this.model = model;
     this.world = model.getWorld();
+    brain = new Brain();
 
     inactiveObserver = new Observer() {
       public void update(Observable obj, Object arg) {
