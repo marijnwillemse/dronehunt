@@ -1,6 +1,5 @@
 # dronehunt
-A Java Duck Hunt clone in which the player takes down hostile drones.
-
+A Java Duck Hunt clone in which the player takes down hostile drones instead of defenseless ducks.
 
 ## Planned features
 
