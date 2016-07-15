@@ -5,38 +5,47 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import main.java.controller.AppController;
+import main.java.math.Vector2D;
 import main.java.model.Drone;
+import main.java.model.Game;
 import main.java.model.MainModel;
+import main.java.model.World;
 import main.java.view.elements.DroneView;
 import main.java.view.elements.FrameCounter;
 import main.java.view.elements.HUDView;
 import main.java.view.elements.SceneryView;
 
-/**
- * Batches and renders sprites from layer to layer.
- * Sprites essentially add / remove themselves to / from the rendering manager.
- */
-public class RenderingManager {
+public class GameRenderer {
 
-  MainModel model;
+  private MainModel model;
   private FrameCounter frameCounter;
 
-  private Graphics context;
+  private Graphics g;
   private BufferedImage bufferedImage;
+  private SpriteLoader spriteLoader;
 
   private DroneView droneView;
   private SceneryView sceneryView;
   private HUDView hudView;
 
+  private Map<String, Sprite> sprites = new HashMap<String, Sprite>();
+
   private int scale;
   private int width;
   private int height;
 
-  public RenderingManager(MainModel model) {
+  public GameRenderer(MainModel model) {
     this.model = model;
+    spriteLoader = new SpriteLoader();
+    loadSprites();
+
     frameCounter = new FrameCounter();
 
     droneView = new DroneView();
@@ -51,6 +60,13 @@ public class RenderingManager {
         BufferedImage.TYPE_INT_ARGB);
   }
 
+  private void loadSprites() {
+    for (String key : SpriteLoader.getImageAdresses().keySet()) {
+      Sprite sprite = spriteLoader.createSprite(key);
+      sprites.put(key, sprite);
+    }
+  }
+
   /**
    * Draw the frame to an image buffer and paint it into the screen buffer.
    * 
@@ -59,17 +75,41 @@ public class RenderingManager {
    * Prevents flickering and keeps paintComponent() simple.
    */
   public void render(double t) {
-    context = bufferedImage.getGraphics();
+    g = bufferedImage.getGraphics();
 
     // Draw all game elements to the buffer image.
-    drawBackground();
-    sceneryView.drawBackground(context);
-    drawUnits(t, context);
-    sceneryView.drawForeground(context);
-    drawHUD(context);
-    if (MainView.getDebug()) {
-      drawDebugOverlay(t, context);
+    fillBackground(g, GameColors.DBLUE.getRGB());
+
+    int x; int y;
+    x = y = 0;
+    renderSprite(sprites.get("background.png"), t, g, x, y);
+    for (Drone drone : model.getWorld().getDrones()) {
+      Vector2D position = drone.getPosition();
+      renderSprite(sprites.get("quadcopter.1.png"), t, g, (int) position.getX(),
+          (int) position.getY());
     }
+    renderSprite(sprites.get("foreground.png"), t, g, x, y);
+    
+    x = 17; y = 183;
+    renderSprite(sprites.get("box.bullet.png"), t, g, x, y);
+    int numberOfBullets = model.getGame().getBullets();
+    int offset = 13;
+    for (int i = 0; i < numberOfBullets; i++) {
+      x = 22 + offset * i; y = 187;
+      renderSprite(sprites.get("bullet.png"), t, g, x, y);
+    }
+    if (MainView.getDebug()) {
+//      droneView.drawDebugOverlay(t, g);
+    }
+  }
+
+  private void fillBackground(Graphics context, Color color) {
+    context.setColor(color);
+    context.fillRect(0, 0, width, height);
+  }
+
+  private void renderSprite(Sprite sprite, double t, Graphics g, int x, int y) {
+    g.drawImage(sprite.getImage(), x, y, null);
   }
 
   /** 
@@ -87,47 +127,4 @@ public class RenderingManager {
       System.out.println("Graphics context error: " + e);
     }
   }
-
-  private void drawBackground() {
-    context.setColor(GameColors.DBLUE.getRGB());
-//    dbg.setColor(GameColors.MELON.getRGB());
-    context.fillRect(0, 0, width, height);
-  }
-
-  private void drawHUD(Graphics g) {
-    resetFont(context, 12);
-
-    //    hudView.drawGameOverBox(g);
-
-    hudView.drawBulletInfo(g, model.getGame());
-
-    // Frame count
-    int fontSize = 12;
-    context.setFont(new Font("Courier", Font.PLAIN, fontSize));
-    context.setColor(Color.white);
-    context.drawString(frameCounter.getFramesPerSecond(), 10, 20);
-  }
-
-
-  private void resetFont(Graphics g, int fontSize) {
-    g.setFont(new Font("Courier", Font.PLAIN, fontSize));
-    g.setColor(Color.white);
-  }
-
-
-  private void drawUnits(double t, Graphics g) {
-    List<Drone> drones = model.getWorld().getDrones();
-    for (Drone drone : drones) {
-      droneView.draw(t, g, drone);
-    }
-  }
-
-  private void drawDebugOverlay(double t, Graphics g) {
-    List<Drone> drones = model.getWorld().getDrones();
-    for (Drone drone : drones) {
-      droneView.drawVelocityVector(t, g, drone);
-      droneView.drawTarget(t, g, drone);
-    }
-  }
-
 }

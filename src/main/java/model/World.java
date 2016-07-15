@@ -4,6 +4,9 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.view.GameRenderer;
+import main.java.view.Sprite;
+
 public class World {
 
   public static final int WIDTH = 256;

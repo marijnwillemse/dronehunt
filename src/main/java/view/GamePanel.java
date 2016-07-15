@@ -14,12 +14,12 @@ import main.java.model.MainModel;
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel {
 
-  private RenderingManager renderingManager;
+  private GameRenderer gameRenderer;
 
   public GamePanel(MainModel model, InputContainer inputContainer,
       int gameWidth, int gameHeight, int scale) {
 
-    renderingManager = new RenderingManager(model);
+    gameRenderer = new GameRenderer(model);
 
     setPreferredSize(new Dimension(gameWidth*scale, gameHeight*scale));
 
@@ -49,7 +49,7 @@ public class GamePanel extends JPanel {
   }
 
   public void refresh(double t) {
-    renderingManager.render(t);     // Renders the game to an image buffer
-    renderingManager.paintBuffer(this.getGraphics()); // Draws the buffer onto the screen
+    gameRenderer.render(t);     // Renders the game to an image buffer
+    gameRenderer.paintBuffer(this.getGraphics()); // Draws the buffer onto the screen
   }
 }

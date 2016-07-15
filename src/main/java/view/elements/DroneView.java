@@ -7,7 +7,6 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import main.java.model.Drone;
-import main.java.view.ImageLoader;
 
 @SuppressWarnings("serial")
 public class DroneView extends JPanel {
@@ -18,11 +17,6 @@ public class DroneView extends JPanel {
   private Image quadImage2;
 
   public DroneView() {
-    ImageLoader imageLoader = new ImageLoader();
-    hexaImage1 = imageLoader.loadImageIcon("hexacopter.1.png").getImage();
-    hexaImage2 = imageLoader.loadImageIcon("hexacopter.2.png").getImage();
-    quadImage1 = imageLoader.loadImageIcon("quadcopter.1.png").getImage();
-    quadImage2 = imageLoader.loadImageIcon("quadcopter.2.png").getImage();
   }
 
   public void draw(double t, Graphics g, Drone drone) {

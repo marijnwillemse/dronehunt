@@ -6,7 +6,6 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import main.java.model.Game;
-import main.java.view.ImageLoader;
 
 @SuppressWarnings("serial")
 public class HUDView extends JPanel {
@@ -18,12 +17,6 @@ public class HUDView extends JPanel {
   private Image imageBullet;
 
   public HUDView() {
-    ImageLoader imageLoader = new ImageLoader();
-    scoreBoxImage = imageLoader.loadImageIcon("scorebox.png").getImage();
-    messageBoxImage = imageLoader.loadImageIcon("gameoverbox.png").getImage();
-    
-    imageBoxBullet = imageLoader.loadImageIcon("box.bullet.png").getImage();
-    imageBullet = imageLoader.loadImageIcon("bullet.png").getImage();
   }
 
   public void drawScoreBox(Graphics g, int score) {

@@ -27,8 +27,6 @@ public class Drone extends Observable {
   
   private boolean active = true;
   
-  private Sprite sprite;
-  
   public Drone() {		
     position = new Vector2D(0.0, 0.0);
     velocity = new Vector2D(0.0, 0.0);

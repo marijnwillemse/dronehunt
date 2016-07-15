@@ -5,8 +5,6 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import main.java.view.ImageLoader;
-
 @SuppressWarnings("serial")
 public class SceneryView extends JPanel {
 
@@ -14,9 +12,6 @@ public class SceneryView extends JPanel {
   private Image foregroundImage;
 
   public SceneryView() {
-    ImageLoader imageLoader = new ImageLoader();
-    backgroundImage = imageLoader.loadImageIcon("background.png").getImage();
-    foregroundImage = imageLoader.loadImageIcon("foreground.png").getImage();
   }
 
   public void drawBackground(Graphics g) {
