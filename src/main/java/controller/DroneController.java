@@ -110,10 +110,13 @@ public class DroneController {
     System.out.println("Shot!");
     for (Drone drone : model.getWorld().getDrones()) {
       Rectangle hitArea = drone.getHitArea();
-      if (hitArea.contains(p)) {
-        System.out.println("Hit!");
+      if (hitArea.contains(p) && drone.isHittable()) {
         drone.setState(new HitState(drone));
       }
     }
+  }
+
+  public void fire() {
+    model.getGame().changeLife(-1);
   }
 }

@@ -116,4 +116,8 @@ public class Drone extends Observable {
   public boolean isActive() {
     return active;
   }
+  
+  public boolean isHittable() {
+    return state.isHittable();
+  }
 }

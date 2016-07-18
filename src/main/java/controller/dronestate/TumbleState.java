@@ -7,12 +7,11 @@ import main.java.model.World;
 
 public class TumbleState extends State {
 
-  private Drone drone;
-
   public TumbleState(Drone drone) {
-    this.drone = drone;
+    super(drone);
     Vector2D position = drone.getPosition();
     drone.setTarget(new Vector2D(position.getX(), World.GROUND_LINE));
+    torque = 8000;
   }
 
   @Override

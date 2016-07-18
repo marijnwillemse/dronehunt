@@ -2,7 +2,7 @@ package main.java.model;
 
 public class Game {
 
-  public final static int MAX_LIFE = 10;
+  public final static int MAX_LIFE = 5;
   public final static int MAX_BULLETS = 2;
   
   private int score;

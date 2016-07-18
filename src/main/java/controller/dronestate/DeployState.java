@@ -10,12 +10,11 @@ import main.java.model.World;
 
 public class DeployState extends State {
 
-  private Drone drone;
-
   public DeployState(Drone drone) {
-    this.drone = drone;
+    super(drone);
     drone.setPosition(startPosition());
     drone.setTarget(initialTarget());
+    hittable = false;
   }
 
   @Override
@@ -24,21 +23,21 @@ public class DeployState extends State {
       drone.setState(new EvadeState(drone));
     }
   }
-  
+
   private Vector2D startPosition() {
     int x = MathOperations.randomInteger(World.getAreaAir().x,
         World.getAreaAir().x + World.getAreaAir().width);
     return new Vector2D(x, World.GROUND_LINE);
   }
-  
+
   private Vector2D initialTarget() {
     Rectangle areaAir = World.getAreaAir();
     int min = (int) (areaAir.getY() + areaAir.getHeight() * 0.6);
     int max = (int) (areaAir.getY() + areaAir.getHeight());
     int y = MathOperations.randomInteger(min, max);
-    
+
     Vector2D position = drone.getPosition();
-    
+
     return new Vector2D(position.getX(), y);
   }
 }

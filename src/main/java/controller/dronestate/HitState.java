@@ -5,13 +5,11 @@ import main.java.model.Drone;
 
 public class HitState extends State {
 
-  private Drone drone;
-  
   private final double PAUSE_TIME = 0.35;
   private double pauseCounter = 0;
 
   public HitState(Drone drone) {
-    this.drone = drone;
+    super(drone);
     
     drone.setTarget(drone.getPosition());
   }
@@ -21,9 +19,7 @@ public class HitState extends State {
     if (pauseCounter < PAUSE_TIME) {
       pauseCounter += dt;
     } else {
-      pauseCounter = 0;
-//      drone.setState(new TumbleState(drone));
-      drone.setState(new EscapeState(drone));
+      drone.setState(new TumbleState(drone));
     }
   }
 }

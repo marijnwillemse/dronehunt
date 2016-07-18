@@ -6,6 +6,7 @@ import main.java.model.Drone;
 public class IdleState extends State {
 
   public IdleState(Drone drone) {
+    super(drone);
   }
 
   @Override

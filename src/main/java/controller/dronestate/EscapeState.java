@@ -6,13 +6,10 @@ import main.java.model.Drone;
 
 public class EscapeState extends State {
 
-  private Drone drone;
-
   public EscapeState(Drone drone) {
-    this.drone = drone;
+    super(drone);
     Vector2D position = drone.getPosition();
     drone.setTarget(new Vector2D(position.getX(), -15));
-    
     torque = 8000;
   }
 

@@ -11,10 +11,8 @@ import main.java.model.World;
 
 public class EvadeState extends State {
 
-  private Drone drone;
-
   public EvadeState(Drone drone) {
-    this.drone = drone;
+    super(drone);
   }
 
   private Vector2D newEvasiveTarget() {
