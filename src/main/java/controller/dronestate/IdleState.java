@@ -3,7 +3,7 @@ package main.java.controller.dronestate;
 import main.java.controller.DroneController;
 import main.java.model.Drone;
 
-public class IdleState implements State {
+public class IdleState extends State {
 
   public IdleState(Drone drone) {
   }

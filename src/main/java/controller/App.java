@@ -17,7 +17,7 @@ public class App {
   public final static int WIDTH = World.WIDTH;
   public final static int HEIGHT = World.HEIGHT;
   
-  private static int viewScale = 4;	// Upscale factor
+  private static int viewScale = 2;	// Upscale factor
 
   private boolean finished = false;
   

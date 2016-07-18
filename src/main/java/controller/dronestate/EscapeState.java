@@ -1,21 +1,26 @@
 package main.java.controller.dronestate;
 
 import main.java.controller.DroneController;
+import main.java.math.Vector2D;
 import main.java.model.Drone;
 
-public class EscapeState implements State {
+public class EscapeState extends State {
 
   private Drone drone;
 
   public EscapeState(Drone drone) {
     this.drone = drone;
-    drone.setVelocity(0.0, -200.0);
+    Vector2D position = drone.getPosition();
+    drone.setTarget(new Vector2D(position.getX(), -15));
+    
+    torque = 8000;
   }
-  
+
   @Override
   public void update(DroneController droneController, double dt) {
-    // TODO Auto-generated method stub
-    
+    if (drone.hasReachedTarget() && drone.isActive()) {
+      drone.deactivate();
+    }
   }
 
 }

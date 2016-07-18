@@ -8,7 +8,7 @@ import main.java.math.Vector2D;
 import main.java.model.Drone;
 import main.java.model.World;
 
-public class DeployState implements State {
+public class DeployState extends State {
 
   private Drone drone;
 

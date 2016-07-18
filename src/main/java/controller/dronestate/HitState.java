@@ -3,7 +3,7 @@ package main.java.controller.dronestate;
 import main.java.controller.DroneController;
 import main.java.model.Drone;
 
-public class HitState implements State {
+public class HitState extends State {
 
   private Drone drone;
   
@@ -22,7 +22,8 @@ public class HitState implements State {
       pauseCounter += dt;
     } else {
       pauseCounter = 0;
-      drone.setState(new TumbleState(drone));
+//      drone.setState(new TumbleState(drone));
+      drone.setState(new EscapeState(drone));
     }
   }
 }

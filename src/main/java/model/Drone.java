@@ -20,8 +20,6 @@ public class Drone extends Observable {
   
   private Vector2D target;
   
-  private double torque; // Value by which the movement speed is derived
-  
   public static final Rectangle HIT_BOX = new Rectangle(0, -4, 18, 18);
   
   private boolean active = true;
@@ -33,8 +31,6 @@ public class Drone extends Observable {
     this.xSize = 40;
     this.ySize = 40;
     
-    torque = 5000;
-
     setState(new IdleState(this));
   }
   
@@ -108,7 +104,7 @@ public class Drone extends Observable {
   }
 
   public double getTorque() {
-    return torque;
+    return state.getTorque();
   }
 
   public void deactivate() {

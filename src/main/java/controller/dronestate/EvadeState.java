@@ -9,7 +9,7 @@ import main.java.math.Vector2D;
 import main.java.model.Drone;
 import main.java.model.World;
 
-public class EvadeState implements State {
+public class EvadeState extends State {
 
   private Drone drone;
 
