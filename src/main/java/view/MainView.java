@@ -23,8 +23,8 @@ public class MainView {
 
   public void createAndShowGUI(int width, int height, int viewScale) {
     /* Test to confirm this thread is running as the EDT */
-    if (javax.swing.SwingUtilities.isEventDispatchThread()) {
-      System.out.println("GUI creation is running on the EDT");
+    if (!javax.swing.SwingUtilities.isEventDispatchThread()) {
+      System.out.println("Warning: GUI creation is not running on the EDT");
     }
 
     // Create the main game frame

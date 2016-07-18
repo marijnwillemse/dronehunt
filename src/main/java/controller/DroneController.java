@@ -23,7 +23,7 @@ public class DroneController {
   public DroneController(MainModel model) {
     this.model = model;
     this.world = model.getWorld();
-    brain = new Brain();
+    brain = new Brain(model);
 
     inactiveObserver = new Observer() {
       public void update(Observable obj, Object arg) {
