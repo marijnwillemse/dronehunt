@@ -9,6 +9,7 @@ import java.util.Observer;
 
 import main.java.controller.dronestate.DeployState;
 import main.java.controller.dronestate.HitState;
+import main.java.controller.dronestate.State;
 import main.java.math.Vector2D;
 import main.java.model.Drone;
 import main.java.model.MainModel;
@@ -33,7 +34,7 @@ public class DroneController {
   }
 
   public void spawnDrone() {
-    Drone drone = new Drone();
+    Drone drone = new Drone("QUAD");
     drone.setPosition(new Vector2D(50.0, 50.0));
     world.addDrone(drone);
     addObserver(drone);
@@ -118,5 +119,9 @@ public class DroneController {
 
   public void fire() {
     model.getGame().changeLife(-1);
+  }
+  
+  public State react(Drone drone) {
+    return brain.chooseState(drone);
   }
 }

@@ -24,12 +24,16 @@ public class Drone extends Observable {
   
   private boolean active = true;
   
-  public Drone() {		
+  private String type;
+  
+  public Drone(String type) {		
     position = new Vector2D(0.0, 0.0);
     velocity = new Vector2D(0.0, 0.0);
 
     this.xSize = 40;
     this.ySize = 40;
+    
+    this.type = type;
     
     setState(new IdleState(this));
   }
@@ -119,5 +123,15 @@ public class Drone extends Observable {
   
   public boolean isHittable() {
     return state.isHittable();
+  }
+
+  public boolean isInjured() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public String getType() {
+    // TODO Auto-generated method stub
+    return "HEXA";
   }
 }

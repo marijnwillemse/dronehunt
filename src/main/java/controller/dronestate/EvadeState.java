@@ -13,6 +13,7 @@ public class EvadeState extends State {
 
   public EvadeState(Drone drone) {
     super(drone);
+    drone.setTarget(newEvasiveTarget());
   }
 
   private Vector2D newEvasiveTarget() {
@@ -46,8 +47,8 @@ public class EvadeState extends State {
 
   @Override
   public void update(DroneController droneController, double dt) {
-    if (!drone.hasTarget() || drone.hasReachedTarget()) {
-      drone.setTarget(newEvasiveTarget());
+    if (drone.hasReachedTarget()) {
+      drone.setState(droneController.react(drone));
     }
   }
 }

@@ -3,12 +3,17 @@ package main.java.controller;
 import java.text.DecimalFormat;
 import java.util.Random;
 
+import main.java.controller.dronestate.AttackState;
+import main.java.controller.dronestate.EscapeState;
+import main.java.controller.dronestate.EvadeState;
+import main.java.controller.dronestate.HealState;
 import main.java.controller.dronestate.IdleState;
 import main.java.controller.dronestate.State;
 import main.java.model.Drone;
 import main.java.model.MainModel;
 
 public class Brain {
+  private MainModel model;
 
   private static final int INPUT_NEURONS = 4;
   private static final int HIDDEN_NEURONS = 3;
@@ -63,7 +68,7 @@ public class Brain {
       0.0, 0.0, 0.0, 1.0, 1.0, 1.0
   };
   private static final double SAMPLE_OUT[][] = new double[][] {
-    // ATT  ESC  EVA  HEA      H B P A
+    //ATT ESC  EVA  HEA      H B P A
     {1.0, 0.0, 0.0, 0.0}, // 0 0 0 0 
     {0.0, 1.0, 0.0, 0.0}, // 0 1 0 0
     {0.0, 1.0, 0.0, 0.0}, // 0 2 0 0
@@ -87,13 +92,12 @@ public class Brain {
   private static final String[] OUTPUT_NAMES = new String[] {
       "Attack", "Escape", "Evade", "Heal"
   };
-  
-  private MainModel model;
-  
+
   public Brain(MainModel model) {
     this.model = model;
     init();
-    demonstrate();
+    train();
+    test();
   }
 
   private static void init() {
@@ -107,17 +111,14 @@ public class Brain {
     errHid = new double[HIDDEN_NEURONS];
   }
 
-  private static void demonstrate() {
+  private static void train() {
     double err = 0.0;
     int sampleIndex = 0;
     int iterations = 0;
-    int sum = 0;
     boolean stopLoop = false;
-    DecimalFormat decimalFormat = new java.text.DecimalFormat("###0.000");
 
     assignRandomWeights();
 
-    // Train the network.
     while(!stopLoop) {
       sampleIndex++;
 
@@ -150,68 +151,8 @@ public class Brain {
 
       backPropagate();
     }
-
-    // Test the network.
-    for (int i = 0; i < MAX_SAMPLES; i++) {
-      inputs[0] = SAMPLE_HEALTH[i];
-      inputs[1] = SAMPLE_BULLETS[i];
-      inputs[2] = SAMPLE_POWER[i];
-      inputs[3] = SAMPLE_ALLY[i];
-
-      target[0] = SAMPLE_OUT[i][0];
-      target[1] = SAMPLE_OUT[i][1];
-      target[2] = SAMPLE_OUT[i][2];
-      target[3] = SAMPLE_OUT[i][3];
-
-      feedForward();
-
-      if (action(actual) != action(target)){
-        System.out.println(inputs[0] + "\t" + inputs[1] + "\t" + inputs[2] + "\t" + inputs[3] + 
-            "\tActual: " + OUTPUT_NAMES[action(actual)] + 
-            "\tExpected: " + OUTPUT_NAMES[action(target)]);
-        System.out.println();
-      }else{
-        sum += 1;
-      }
-    }
-
-    System.out.println("Network is " + decimalFormat.format(
-        (double)sum / ((double)MAX_SAMPLES) * 100.0) + "% correct.");
-
-    // Run some tests.
-    System.out.println();
-    
-    System.out.println("H B P A");
-    //          Health            Bullets           Power             Allies
-    inputs[0] = 1.0 ; inputs[1] = 2.0 ; inputs[2] = 1.0 ; inputs[3] = 1.0;
-    feedForward();
-    System.out.println("1-2-1-1 Action: " + OUTPUT_NAMES[action(actual)]);
-
-    inputs[0] = 1.0 ; inputs[1] = 1.0 ; inputs[2] = 1.0 ; inputs[3] = 1.0;
-    feedForward();
-    System.out.println("1-1-1-1 Action: " + OUTPUT_NAMES[action(actual)]);
-
-    inputs[0] = 0.0 ; inputs[1] = 0.0 ; inputs[2] = 0.0 ; inputs[3] = 0.0;
-    feedForward();
-    System.out.println("0-0-0-0 Action: " + OUTPUT_NAMES[action(actual)]);
-
-    inputs[0] = 0.0 ; inputs[1] = 1.0 ; inputs[2] = 1.0 ; inputs[3] = 1.0;
-    feedForward();
-    System.out.println("0-1-1-1 Action: " + OUTPUT_NAMES[action(actual)]);
-
-    inputs[0] = 0.0 ; inputs[1] = 0.0 ; inputs[2] = 1.0 ; inputs[3] = 1.0;
-    feedForward();
-    System.out.println("0-0-1-1 Action: " + OUTPUT_NAMES[action(actual)]);
-
-    inputs[0] = 1.0 ; inputs[1] = 2.0 ; inputs[2] = 0.0 ; inputs[3] = 0.0;
-    feedForward();
-    System.out.println("1-2-0-0 Action: " + OUTPUT_NAMES[action(actual)]);
-
-    inputs[0] = 1.0 ; inputs[1] = 1.0 ; inputs[2] = 0.0 ; inputs[3] = 2.0;
-    feedForward();
-    System.out.println("1-1-0-2 Action: " + OUTPUT_NAMES[action(actual)]);
   }
-  
+
   private static void assignRandomWeights() {
     for (int inp = 0; inp < INPUT_NEURONS; inp++) { // Do not subtract 1 here.
       for (int hid = 0; hid < HIDDEN_NEURONS; hid++) {
@@ -228,6 +169,75 @@ public class Brain {
     }
   }
 
+  /**
+   * Test the network for how effective it has learned to react to input.  
+   */
+  private void test() {
+    System.out.println("Running network tests..\r");
+    int sum = 0;
+    DecimalFormat decimalFormat = new java.text.DecimalFormat("###0.0");
+
+    for (int i = 0; i < MAX_SAMPLES; i++) {
+      inputs[0] = SAMPLE_HEALTH[i];
+      inputs[1] = SAMPLE_BULLETS[i];
+      inputs[2] = SAMPLE_POWER[i];
+      inputs[3] = SAMPLE_ALLY[i];
+
+      target[0] = SAMPLE_OUT[i][0];
+      target[1] = SAMPLE_OUT[i][1];
+      target[2] = SAMPLE_OUT[i][2];
+      target[3] = SAMPLE_OUT[i][3];
+
+      feedForward();
+
+      // Test for deviations in actual an target actions.
+      boolean detected = false;
+      if (action(actual) != action(target)){
+        if (!detected) {
+          detected = true;
+          System.out.println("Deviations detected from actual to target actions:");
+        }
+        System.out.println("[" + (int) inputs[0] + "-" + (int) inputs[1]
+            + "-" + (int) inputs[2] + "-" + (int) inputs[3] + "] Action: "
+            + OUTPUT_NAMES[action(actual)] + " (Expected: "
+            + OUTPUT_NAMES[action(target)] + ")");
+      }else{
+        sum += 1;
+      }
+
+      if (detected) System.out.println();
+    }
+
+    System.out.println("Network is approximately " + decimalFormat.format(
+        (double)sum / ((double)MAX_SAMPLES) * 100.0) + "% correct.\n");
+
+    System.out.println("Test results from actions performed on sample inputs:");
+    System.out.println(" H B P A");
+
+    double[][] testInputs = new double[][] {
+      {1.0, 2.0, 1.0, 1.0},
+      {1.0, 1.0, 1.0, 1.0},
+      {0.0, 0.0, 0.0, 0.0},
+      {0.0, 1.0, 1.0, 1.0},
+      {0.0, 0.0, 1.0, 1.0},
+      {1.0, 2.0, 0.0, 0.0},
+      {1.0, 1.0, 0.0, 2.0}
+    };
+
+    for (int i = 0; i < testInputs.length; i++) {
+      inputs = testInputs[i];
+      feedForward();
+      String configuration = Integer.toString((int) testInputs[i][0]) + "-"
+          + Integer.toString((int) testInputs[i][1]) + "-"
+          + Integer.toString((int) testInputs[i][2]) + "-"
+          + Integer.toString((int) testInputs[i][3]);
+      System.out.println("[" + configuration + "] Action: "
+          + OUTPUT_NAMES[action(actual)]);
+    }
+    System.out.println();
+    
+    System.out.println("Tests finished.\r");
+  }
 
   /**
    * Picks the output neuron with the highest value and returns its index.
@@ -280,14 +290,18 @@ public class Brain {
       actual[outNeuron] = sigmoid(sum);
     }
   }
-  
+
+
   private static void backPropagate() {
-    // Calculate the output layer error (step 3 for output cell).
+    // Two cases are considered: the output nodes and the hidden nodes.
+
+    // Calculate the output layer error given the set of target data points.
     for (int out = 0; out < OUTPUT_NEURONS; out++) {
-      errOut[out] = (target[out] - actual[out]) * sigmoidDerivative(actual[out]);
+      errOut[out] = (target[out] - actual[out]) *
+          sigmoidDerivative(actual[out]);
     }
 
-    // Calculate the hidden layer error (step 3 for hidden cell).
+    // Calculate the hidden layer error.
     for (int hid = 0; hid < HIDDEN_NEURONS; hid++) {
       errHid[hid] = 0.0;
       for (int out = 0; out < OUTPUT_NEURONS; out++) {
@@ -296,7 +310,7 @@ public class Brain {
       errHid[hid] *= sigmoidDerivative(hidden[hid]);
     }
 
-    // Update the weights for the output layer (step 4).
+    // Update the weights for the output layer.
     for (int out = 0; out < OUTPUT_NEURONS; out++) {
       for (int hid = 0; hid < HIDDEN_NEURONS; hid++) {
         weightsHidOut[hid][out] += (LEARN_RATE * errOut[out] * hidden[hid]);
@@ -305,7 +319,7 @@ public class Brain {
       weightsHidOut[HIDDEN_NEURONS][out] += (LEARN_RATE * errOut[out]);
     }
 
-    // Update the weights for the hidden layer (step 4).
+    // Update the weights for the hidden layer.
     for (int hid = 0; hid < HIDDEN_NEURONS; hid++) {
       for (int inp = 0; inp < INPUT_NEURONS; inp++) {
         weightsInHid[inp][hid] += (LEARN_RATE * errHid[hid] * inputs[inp]);
@@ -315,7 +329,6 @@ public class Brain {
     }
   }
 
-  
   /**
    * A mathematical function having an "S" shaped curve (sigmoid curve).
    * 
@@ -323,16 +336,34 @@ public class Brain {
    * the frequency of action potentials, or firing, of biological neurons in
    * the brain.
    */
-  private static double sigmoid(double val) {
-    return 1.0 / (1.0 + Math.exp(-val));
-  }
-  
-  private static double sigmoidDerivative(double val) {
-    return val * (1.0 - val);
+  private static double sigmoid(double value) {
+    return 1.0 / (1.0 + Math.exp(-value));
   }
 
-  private void observe() {
+  /**
+   * Used in the backpropagation method to perform a type of gradient descent.
+   */
+  private static double sigmoidDerivative(double value) {
+    return value * (1.0 - value);
+  }
+
+  private double[] observe(Drone drone) {
     // Adjust input values to observed environment
+    double[] observations = new double[4];
+
+    // Observe health
+    observations[0] = (drone.isInjured()) ? 0.0 : 1.0;
+
+    // Observe bullets
+    observations[1] = (double) model.getGame().getBullets();
+    
+    // Observe power
+    observations[2] = (drone.getType() == "HEXA") ? 1.0 : 0.0;
+    
+    // Observe allies
+    observations[3] = (model.getWorld().numberOfDrones() > 0) ? 1.0 : 0.0;
+
+    return observations;
   }
 
 
@@ -344,6 +375,21 @@ public class Brain {
    * which is established by training the network. 
    */
   public State chooseState(Drone drone) {
-    return new IdleState(drone);
+    inputs = observe(drone);
+    feedForward();
+    int a = action(actual);
+    System.out.println("Chose to " + OUTPUT_NAMES[a]);
+    
+    switch (a) {
+      case 0: // Attack
+        return new AttackState(drone);
+      case 1: // Escape
+        return new EscapeState(drone);
+      case 2: // Evade
+        return new EvadeState(drone);
+      case 3: // Heal
+        return new HealState(drone);
+    }
+    return null;
   }
 }

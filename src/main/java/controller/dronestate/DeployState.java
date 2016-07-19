@@ -20,7 +20,7 @@ public class DeployState extends State {
   @Override
   public void update(DroneController droneController, double dt) {
     if(drone.hasReachedTarget()) {
-      drone.setState(new EvadeState(drone));
+      drone.setState(droneController.react(drone));
     }
   }
 
