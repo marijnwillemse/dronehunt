@@ -15,4 +15,8 @@ public abstract class MathOperations {
   public static double randomDouble(double min, double max) {
     return min + Math.random() * ((max - min) + 1);
   }
+
+  public static boolean randomBoolean() {
+    return Math.random() < 0.5;
+  }
 }

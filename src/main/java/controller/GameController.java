@@ -2,6 +2,7 @@ package main.java.controller;
 
 import java.util.List;
 
+import main.java.math.MathOperations;
 import main.java.model.Drone;
 import main.java.model.Game;
 import main.java.model.MainModel;
@@ -57,9 +58,11 @@ public class GameController {
   }
 
   private void control(double dt) {
-    if (model.getWorld().numberOfDrones() == 0) {
+    if (model.getWorld().numberOfDrones() < 2) {
       // Spawn a new drone.
-      droneController.spawnDrone();
+      String type = (MathOperations.randomBoolean()) ? "QUAD" : "HEXA";
+      System.out.println(type);
+      droneController.spawnDrone(type);
     }
     
     if (game.getBullets() == 0 && !game.isReloading()) {

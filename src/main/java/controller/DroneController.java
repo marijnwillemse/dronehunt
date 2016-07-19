@@ -33,8 +33,8 @@ public class DroneController {
     };
   }
 
-  public void spawnDrone() {
-    Drone drone = new Drone("QUAD");
+  public void spawnDrone(String type) {
+    Drone drone = new Drone(type);
     drone.setPosition(new Vector2D(50.0, 50.0));
     world.addDrone(drone);
     addObserver(drone);

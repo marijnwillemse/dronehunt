@@ -13,7 +13,7 @@ public class HealState extends State {
 
   public HealState(Drone drone) {
     super(drone);
-    drone.setTarget(new Vector2D(drone.getX(), drone.getY()+10));
+    drone.setTarget(drone.getPosition());
   }
 
   @Override

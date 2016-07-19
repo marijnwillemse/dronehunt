@@ -170,7 +170,8 @@ public class GameRenderer {
     public void drawDrones(Graphics g, List<Drone> drones) {
       for (Drone drone : drones) {
         Vector2D position = drone.getPosition();
-        renderSprite(sprites.get("quadcopter.1"), g, (int) position.getX(),
+        String key = (drone.getType() == "QUAD") ? "quadcopter.1" : "hexacopter.1";
+        renderSprite(sprites.get(key), g, (int) position.getX(),
             (int) position.getY());
       }
     }

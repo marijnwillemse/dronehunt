@@ -138,6 +138,6 @@ public class Drone extends Observable {
   }
 
   public String getType() {
-    return "type";
+    return type;
   }
 }
