@@ -40,11 +40,11 @@ public class DroneController {
     addObserver(drone);
     drone.setState(new DeployState(drone));
   }
-  
+
   private void addObserver(Drone drone) {
     drone.addObserver(inactiveObserver);
   }
-  
+
   public void removeObserver(Drone drone) {
     drone.deleteObserver(inactiveObserver);
   }
@@ -121,7 +121,7 @@ public class DroneController {
     int power = (drone.getType() == "HEXA") ? 2 : 1;
     model.getGame().changeLife(-power);
   }
-  
+
   public State react(Drone drone) {
     return brain.chooseState(drone);
   }

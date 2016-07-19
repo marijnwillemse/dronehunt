@@ -123,6 +123,12 @@ public class Drone extends Observable {
     return active;
   }
   
+  public void injure() {
+    if (injured == false) {
+      injured = true;
+    }
+  }
+  
   public boolean isHittable() {
     return state.isHittable();
   }
