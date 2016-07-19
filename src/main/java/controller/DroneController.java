@@ -117,8 +117,9 @@ public class DroneController {
     }
   }
 
-  public void fire() {
-    model.getGame().changeLife(-1);
+  public void fire(Drone drone) {
+    int power = (drone.getType() == "HEXA") ? 2 : 1;
+    model.getGame().changeLife(-power);
   }
   
   public State react(Drone drone) {

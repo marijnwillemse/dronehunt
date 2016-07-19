@@ -235,7 +235,7 @@ public class Brain {
           + OUTPUT_NAMES[action(actual)]);
     }
     System.out.println();
-    
+
     System.out.println("Tests finished.\r");
   }
 
@@ -356,16 +356,28 @@ public class Brain {
 
     // Observe bullets
     observations[1] = (double) model.getGame().getBullets();
-    
+
     // Observe power
     observations[2] = (drone.getType() == "HEXA") ? 1.0 : 0.0;
-    
+
     // Observe allies
-    observations[3] = (model.getWorld().numberOfDrones() > 0) ? 1.0 : 0.0;
+    observations[3] = (model.getWorld().numberOfDrones() > 1) ? 1.0 : 0.0;
 
     return observations;
   }
 
+  public void printInput() {
+    System.out.println(" H B P A");
+    System.out.print("[");
+    for (int i = 0; i < 4; i++) {
+      System.out.print((int) inputs[i]);
+      if (i < 3) {
+        System.out.print("-");
+      } else {
+        System.out.println("]");
+      }
+    }
+  }
 
   /**
    * Intelligently chooses a state based on neural net processing.
@@ -378,8 +390,9 @@ public class Brain {
     inputs = observe(drone);
     feedForward();
     int a = action(actual);
+//    printInput();
     System.out.println("Chose to " + OUTPUT_NAMES[a]);
-    
+
     switch (a) {
       case 0: // Attack
         return new AttackState(drone);

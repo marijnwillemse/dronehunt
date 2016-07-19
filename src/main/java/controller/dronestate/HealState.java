@@ -27,7 +27,7 @@ public class HealState extends State {
         drone.setState(droneController.react(drone));
       } else {
         counter = 0;
-        droneController.fire();
+        droneController.fire(drone);
         fired = true;
       }
     }

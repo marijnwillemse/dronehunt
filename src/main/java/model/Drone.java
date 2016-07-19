@@ -24,6 +24,8 @@ public class Drone extends Observable {
   
   private boolean active = true;
   
+  private boolean injured = false;
+  
   private String type;
   
   public Drone(String type) {		
@@ -126,12 +128,10 @@ public class Drone extends Observable {
   }
 
   public boolean isInjured() {
-    // TODO Auto-generated method stub
-    return false;
+    return injured;
   }
 
   public String getType() {
-    // TODO Auto-generated method stub
-    return "HEXA";
+    return "type";
   }
 }
