@@ -24,11 +24,13 @@ public class GameRenderer {
   private FrameCounter frameCounter;
 
   private Map<String, Sprite> sprites = new HashMap<String, Sprite>();
+  private Map<String, Animation> animations = new HashMap<String, Animation>();
 
   public GameRenderer(MainModel model) {
     this.model = model;
     spriteLoader = new SpriteLoader();
     loadSprites();
+    loadAnimations();
     frameCounter = new FrameCounter();
 
     bufferedImage = new BufferedImage(App.WIDTH, App.HEIGHT,
@@ -39,6 +41,13 @@ public class GameRenderer {
     for (String key : SpriteLoader.getImageAdresses().keySet()) {
       Sprite sprite = spriteLoader.createSprite(key);
       sprites.put(key, sprite);
+    }
+  }
+
+  private void loadAnimations() {
+    for (String key : SpriteLoader.getAnimationAdresses().keySet()) {
+      Animation animation = spriteLoader.createAnimation(key);
+      animations.put(key, animation);
     }
   }
 
