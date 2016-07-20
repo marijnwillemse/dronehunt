@@ -49,7 +49,9 @@ public class GamePanel extends JPanel {
   }
 
   public void refresh(double t) {
-    gameRenderer.render(t);     // Renders the game to an image buffer
-    gameRenderer.paintBuffer(this.getGraphics()); // Draws the buffer onto the screen
+    // Renders the game to an image buffer
+    gameRenderer.render(t);
+    // Draw the buffer onto the screen
+    gameRenderer.paintBuffer(this.getGraphics());
   }
 }

@@ -22,38 +22,45 @@ public class SpriteLoader {
     imageInfo.put("box.bullet", new String[] {"/main/resources/images/box.bullet.png", "46", "18"});
   }
 
-  private static Map<String, String[]> animationInfo = new HashMap<String, String[]>();
+  private static Map<String, String[][]> animationInfo = new HashMap<String, String[][]>();
 
   static {
-    animationInfo.put("quadcopter", new String[] {
-        "quadcopter.1",
-        "quadcopter.2"
+    animationInfo.put("quadcopter", new String[][] {
+      { "quadcopter.1", "0.1" },
+      { "quadcopter.2", "0.1" }
     });
-    animationInfo.put("hexacopter", new String[] {
-        "hexacopter.1",
-        "hexacopter.2"
+    animationInfo.put("hexacopter", new String[][] {
+      { "hexacopter.1", "0.1" },
+      { "hexacopter.2", "0.1" }
     });
   }
 
   public Sprite createSprite(String key) {
     String[] info = imageInfo.get(key);
-    String imgUrl = info[0];
+    BufferedImage image = loadImage(info[0]);
     int width = Integer.parseInt(info[1]);
     int height = Integer.parseInt(info[2]);
-
-    BufferedImage image = null;
-    try {
-      image = ImageIO.read(getClass().getResource(imgUrl));
-    } catch(Exception ioe) {
-      System.out.println("Unable load system image " + imgUrl);
-    }
     return new Sprite(image, width, height);
   }
-  
+
+  private BufferedImage loadImage(String Url) {
+    try {
+      return ImageIO.read(getClass().getResource(Url));
+    } catch(Exception e) {
+      System.out.println("Unable load system image " + Url);
+    }
+    return null;
+  }
+
   public Animation createAnimation(String key) {
-    String[] frameNames = animationInfo.get(key);
-    BufferedImage[] frames = new BufferedImage[frameNames.length];
-    Animation animation = new Animation(frames, 1);
+    Animation animation = new Animation();
+    String[][] info = animationInfo.get(key);
+    // For every frame
+    for (int i = 0; i < info.length; i++) {
+      // Process name and duration
+      double duration = Double.parseDouble(info[i][1]);
+      animation.addFrame(createSprite(info[i][0]), duration);
+    }
     return animation;
   }
 
@@ -61,7 +68,7 @@ public class SpriteLoader {
     return imageInfo;
   }
 
-  public static Map<String, String[]> getAnimationAdresses() {
+  public static Map<String, String[][]> getAnimationAdresses() {
     return animationInfo;
   }
 }

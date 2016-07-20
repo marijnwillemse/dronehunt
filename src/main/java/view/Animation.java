@@ -1,103 +1,72 @@
 package main.java.view;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Animation {
 
-  private int frameCount;                 // Counts ticks for change
-  private int frameDelay;                 // frame delay 1-12 (You will have to play around with this)
-  private int currentFrame;               // animations current frame
-  private int animationDirection;         // animation direction (i.e counting forward or backward)
-  private int totalFrames;                // total amount of frames for your animation
-
-  private boolean stopped;                // has animations stopped
+  private double timer;   // Current time position in animation.
+  private int currentFrame; // Index of current frame in animation.
+  private double duration;    // Running length of animation in ms.
 
   private List<Frame> frames = new ArrayList<Frame>();    // Arraylist of frames 
 
-  public Animation(BufferedImage[] frames, int frameDelay) {
-      this.frameDelay = frameDelay;
-      this.stopped = true;
-
-      for (int i = 0; i < frames.length; i++) {
-          addFrame(frames[i], frameDelay);
-      }
-
-      this.frameCount = 0;
-      this.frameDelay = frameDelay;
-      this.currentFrame = 0;
-      this.animationDirection = 1;
-      this.totalFrames = this.frames.size();
-
-  }
-
-  public void start() {
-      if (!stopped) {
-          return;
-      }
-
-      if (frames.size() == 0) {
-          return;
-      }
-
-      stopped = false;
-  }
-
-  public void stop() {
-      if (frames.size() == 0) {
-          return;
-      }
-
-      stopped = true;
-  }
-
-  public void restart() {
-      if (frames.size() == 0) {
-          return;
-      }
-
-      stopped = false;
-      currentFrame = 0;
+  public Animation() {
+    this.timer = 0;
+    this.currentFrame = 0;
   }
 
   public void reset() {
-      this.stopped = true;
-      this.frameCount = 0;
-      this.currentFrame = 0;
+    timer = 0;
   }
 
-  private void addFrame(BufferedImage frame, int duration) {
-      if (duration <= 0) {
-          System.err.println("Invalid duration: " + duration);
-          throw new RuntimeException("Invalid duration: " + duration);
+  public void addFrame(Sprite sprite, double duration) {
+    if (duration <= 0) {
+      System.err.println("Invalid duration: " + duration);
+      throw new RuntimeException("Invalid duration: " + duration);
+    }
+    frames.add(new Frame(sprite, duration));
+    refreshLength();
+  }
+
+  private void refreshLength() {
+    double sum = 0;
+    for (Frame frame : frames) {
+      sum += frame.duration;
+    }
+    duration = sum;
+  }
+
+  public Sprite getCurrentSprite() {
+    return frames.get(currentFrame).sprite;
+  }
+
+  public void update(double dt) {
+    timer += dt;
+    if (timer > duration) {
+      // Wrap timer around animation length.
+      timer = timer % duration;
+    }
+    
+    double sum = 0;
+    for (int i = 0; i < frames.size(); i++) {
+      sum += frames.get(i).duration;
+      if (sum >= timer) {
+        currentFrame = i;
+        break;
       }
-
-      frames.add(new Frame(frame, duration));
-      currentFrame = 0;
+    }
   }
 
-  public BufferedImage getSprite() {
-      return frames.get(currentFrame).getFrame();
-  }
+  public class Frame {
 
-  public void update() {
-      if (!stopped) {
-          frameCount++;
+    private Sprite sprite;
+    private double duration;
 
-          if (frameCount > frameDelay) {
-              frameCount = 0;
-              currentFrame += animationDirection;
-
-              if (currentFrame > totalFrames - 1) {
-                  currentFrame = 0;
-              }
-              else if (currentFrame < 0) {
-                  currentFrame = totalFrames - 1;
-              }
-          }
-      }
-
+    public Frame(Sprite sprite, double duration) {
+      this.sprite = sprite;
+      this.duration = duration;
+    }
   }
 
 }

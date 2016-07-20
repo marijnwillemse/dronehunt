@@ -26,6 +26,8 @@ public class GameRenderer {
   private Map<String, Sprite> sprites = new HashMap<String, Sprite>();
   private Map<String, Animation> animations = new HashMap<String, Animation>();
 
+  private double time;
+  
   public GameRenderer(MainModel model) {
     this.model = model;
     spriteLoader = new SpriteLoader();
@@ -58,14 +60,16 @@ public class GameRenderer {
    * so that it can be repainted directly into the window.
    * Prevents flickering and keeps paintComponent() simple.
    */
-  public void render(double t) {
+  public void render(double newTime) {
     g = bufferedImage.getGraphics();
+    double dt = Math.abs(time - newTime);
+    this.time = newTime;
 
     // Draw all game elements to the buffer image.
     DrawMethods methods = new DrawMethods();
     methods.fillBackground(g, GameColors.DBLUE.getRGB());
     methods.drawBackdrop(g);
-    methods.drawDrones(g, model.getWorld().getDrones());
+    methods.drawDrones(g, model.getWorld().getDrones(), dt);
     methods.drawForeground(g);
     methods.drawBulletHUD(g, model.getGame().getBullets());
     methods.drawLifeHUD(g, model.getGame().getLife());
@@ -96,6 +100,16 @@ public class GameRenderer {
   }
 
   private void renderSprite(Sprite sprite, Graphics g, int x, int y) {
+    x -= sprite.getWidth() / 2;
+    y -= sprite.getHeight() / 2;
+    g.drawImage(sprite.getImage(), x, y, null);
+  }
+  
+  private void renderAnimation(Animation animation, Graphics g, double dt, int x,
+      int y) {
+    
+    animation.update(dt);
+    Sprite sprite = animation.getCurrentSprite();
     x -= sprite.getWidth() / 2;
     y -= sprite.getHeight() / 2;
     g.drawImage(sprite.getImage(), x, y, null);
@@ -176,11 +190,11 @@ public class GameRenderer {
       renderSprite(sprites.get("foreground"), g, xCenter(), yCenter());
     }
 
-    public void drawDrones(Graphics g, List<Drone> drones) {
+    public void drawDrones(Graphics g, List<Drone> drones, double dt) {
       for (Drone drone : drones) {
         Vector2D position = drone.getPosition();
-        String key = (drone.getType() == "QUAD") ? "quadcopter.1" : "hexacopter.1";
-        renderSprite(sprites.get(key), g, (int) position.getX(),
+        String key = (drone.getType() == "QUAD") ? "quadcopter" : "hexacopter";
+        renderAnimation(animations.get(key), g, dt, (int) position.getX(),
             (int) position.getY());
       }
     }
