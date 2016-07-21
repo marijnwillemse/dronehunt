@@ -12,6 +12,7 @@ public class TumbleState extends State {
     Vector2D position = drone.getPosition();
     drone.setTarget(new Vector2D(position.getX(), World.GROUND_LINE));
     torque = 8000;
+    hittable = false;
   }
 
   @Override

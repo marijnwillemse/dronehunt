@@ -58,7 +58,7 @@ public class GameController {
   }
 
   private void control(double dt) {
-    if (model.getWorld().numberOfDrones() < 2) {
+    if (model.getWorld().numberOfDrones() < 1) {
       // Spawn a new drone.
       String type = (MathOperations.randomBoolean()) ? "QUAD" : "HEXA";
       System.out.println(type);

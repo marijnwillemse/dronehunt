@@ -28,7 +28,7 @@ public class DroneController {
 
     inactiveObserver = new Observer() {
       public void update(Observable obj, Object arg) {
-        System.out.println("Dead!");
+        // Drone deceased.
       }
     };
   }

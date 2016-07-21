@@ -6,12 +6,15 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import main.java.controller.App;
 import main.java.controller.dronestate.AttackState;
 import main.java.controller.dronestate.HealState;
+import main.java.controller.dronestate.TumbleState;
 import main.java.math.Vector2D;
 import main.java.model.Drone;
 import main.java.model.MainModel;
@@ -67,11 +70,13 @@ public class GameRenderer {
     double dt = Math.abs(time - newTime);
     this.time = newTime;
 
+    updateAnimations(dt);
+
     // Draw all game elements to the buffer image.
     DrawMethods methods = new DrawMethods();
     methods.fillBackground(g, GameColors.DBLUE.getRGB());
     methods.drawBackdrop(g);
-    methods.drawDrones(g, model.getWorld().getDrones(), dt);
+    methods.drawDrones(g, model.getWorld().getDrones());
     methods.drawForeground(g);
     methods.drawBulletHUD(g, model.getGame().getBullets());
     methods.drawLifeHUD(g, model.getGame().getLife());
@@ -79,6 +84,12 @@ public class GameRenderer {
     methods.drawFramerate(g, frameCounter.getFramesPerSecond());
     if (MainView.getDebug()) {
       methods.drawDebug(g, model.getWorld().getDrones());
+    }
+  }
+
+  private void updateAnimations(double dt) {
+    for (Animation animation : animations.values()) {
+      animation.update(dt);
     }
   }
 
@@ -107,10 +118,9 @@ public class GameRenderer {
     g.drawImage(sprite.getImage(), x, y, null);
   }
 
-  private void renderAnimation(Animation animation, Graphics g, double dt, int x,
+  private void renderAnimation(Animation animation, Graphics g, int x,
       int y) {
 
-    animation.update(dt);
     Sprite sprite = animation.getCurrentSprite();
     x -= sprite.getWidth() / 2;
     y -= sprite.getHeight() / 2;
@@ -192,36 +202,42 @@ public class GameRenderer {
       renderSprite(sprites.get("foreground"), g, xCenter(), yCenter());
     }
 
-    public void drawDrones(Graphics g, List<Drone> drones, double dt) {
+    public void drawDrones(Graphics g, List<Drone> drones) {
       for (Drone drone : drones) {
         Vector2D position = drone.getPosition();
-        
+
         String type = drone.getType();
         String key; // Used to provide needed sprite or animation.
-        
-        // Render base animation
-        key = (type == "QUAD") ? "quadcopter" : "hexacopter";
-        renderAnimation(animations.get(key), g, dt, (int) position.getX(),
-            (int) position.getY());
+
+        // Render drone body
+        if (drone.getState() instanceof TumbleState) {
+          key = (type == "QUAD") ? "quadcopter.1" : "hexacopter.1";
+          renderSprite(sprites.get(key), g, (int) position.getX(),
+              (int) position.getY());
+        } else {
+          key = (type == "QUAD") ? "quadcopter" : "hexacopter";
+          renderAnimation(animations.get(key), g, (int) position.getX(),
+              (int) position.getY());
+        }
 
         // Render fire animation
         if (drone.getState() instanceof AttackState) {
           key = (type == "QUAD") ? "quad.fire" : "hexa.fire";
-          renderAnimation(animations.get(key), g, dt, (int) position.getX(),
+          renderAnimation(animations.get(key), g, (int) position.getX(),
               (int) position.getY());
         }
-        
+
         // Render injured animation
         if (drone.isInjured()) {
           key = "drone.smoke";
-          renderAnimation(animations.get(key), g, dt, (int) position.getX(),
+          renderAnimation(animations.get(key), g, (int) position.getX(),
               (int) position.getY() - 16);
         }
-        
+
         // Render health animation
         if (drone.getState() instanceof HealState) {
           key = "drone.hearts";
-          renderAnimation(animations.get(key), g, dt, (int) position.getX(),
+          renderAnimation(animations.get(key), g, (int) position.getX(),
               (int) position.getY() - 9);
         }
       }
