@@ -12,8 +12,13 @@ public class GameController {
   private MainModel model;
   private Game game;
   private DroneController droneController;
+
   private double reloadCounter;
   private double reloadTime = 1.0;
+
+  private double spawnCounter;
+  private double spawnTime = 0.5;
+  private double spawnChance = 0.2;
 
   public GameController(MainModel model) {
     this.model = model;
@@ -27,7 +32,7 @@ public class GameController {
   public void update(double dt) {
     // Collect inactive entities
     collect();
-    
+
     // Move entities
     for (Drone drone : model.getWorld().getDrones()) {
       droneController.move(drone, dt);
@@ -35,13 +40,13 @@ public class GameController {
 
     // Control game
     control(dt);
-    
+
     // Control entities
     for (Drone drone : model.getWorld().getDrones()) {
       droneController.control(drone, dt);
     }
   }
-  
+
   /**
    * Collects inactive entities in the world and properly removes them from
    * the game.
@@ -58,17 +63,20 @@ public class GameController {
   }
 
   private void control(double dt) {
-    if (model.getWorld().numberOfDrones() < 1) {
-      // Spawn a new drone.
-      String type = (MathOperations.randomBoolean()) ? "QUAD" : "HEXA";
-      System.out.println(type);
-      droneController.spawnDrone(type);
+    spawnCounter += dt;
+    if (spawnCounter > spawnTime) {
+      spawnCounter = spawnCounter % spawnTime;
+      if (model.getWorld().numberOfDrones() < 2 && Math.random() < spawnChance) {
+        // Spawn a new drone.
+        String type = (MathOperations.randomBoolean()) ? "QUAD" : "HEXA";
+        droneController.spawnDrone(type);
+      }
     }
-    
+
     if (game.getBullets() == 0 && !game.isReloading()) {
       game.startReloading();
     }
-    
+
     if (game.isReloading()) {
       reloadCounter += dt;
       if (reloadCounter > reloadTime) {
@@ -95,6 +103,6 @@ public class GameController {
   }
 
   public void KeyPressed(int keyCode) {
-    
+
   }
 }
