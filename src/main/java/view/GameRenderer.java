@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import main.java.controller.App;
+import main.java.controller.dronestate.AttackState;
+import main.java.controller.dronestate.HealState;
 import main.java.math.Vector2D;
 import main.java.model.Drone;
 import main.java.model.MainModel;
@@ -27,7 +29,7 @@ public class GameRenderer {
   private Map<String, Animation> animations = new HashMap<String, Animation>();
 
   private double time;
-  
+
   public GameRenderer(MainModel model) {
     this.model = model;
     spriteLoader = new SpriteLoader();
@@ -104,10 +106,10 @@ public class GameRenderer {
     y -= sprite.getHeight() / 2;
     g.drawImage(sprite.getImage(), x, y, null);
   }
-  
+
   private void renderAnimation(Animation animation, Graphics g, double dt, int x,
       int y) {
-    
+
     animation.update(dt);
     Sprite sprite = animation.getCurrentSprite();
     x -= sprite.getWidth() / 2;
@@ -166,19 +168,19 @@ public class GameRenderer {
     public void drawBulletHUD(Graphics g, int bullets) {
       int x = 8;
       int y = 194;
-      
+
       // String
       int fontSize = 12;
       g.setFont(new Font("Courier", Font.PLAIN, fontSize));
       g.setColor(Color.white);
       g.drawString("AMMO", x, y);
-      
+
       x += 41;
       y -= 3;
 
       int numberOfBullets = model.getGame().getBullets();
       int offset = 13;
-      
+
       for (int i = 0; i < numberOfBullets; i++) {
         int x2 = x + offset * i;
         renderSprite(sprites.get("bullet"), g, x2, y);
@@ -193,9 +195,35 @@ public class GameRenderer {
     public void drawDrones(Graphics g, List<Drone> drones, double dt) {
       for (Drone drone : drones) {
         Vector2D position = drone.getPosition();
-        String key = (drone.getType() == "QUAD") ? "quadcopter" : "hexacopter";
+        
+        String type = drone.getType();
+        String key; // Used to provide needed sprite or animation.
+        
+        // Render base animation
+        key = (type == "QUAD") ? "quadcopter" : "hexacopter";
         renderAnimation(animations.get(key), g, dt, (int) position.getX(),
             (int) position.getY());
+
+        // Render fire animation
+        if (drone.getState() instanceof AttackState) {
+          key = (type == "QUAD") ? "quad.fire" : "hexa.fire";
+          renderAnimation(animations.get(key), g, dt, (int) position.getX(),
+              (int) position.getY());
+        }
+        
+        // Render injured animation
+        if (drone.isInjured()) {
+          key = "drone.smoke";
+          renderAnimation(animations.get(key), g, dt, (int) position.getX(),
+              (int) position.getY() - 16);
+        }
+        
+        // Render health animation
+        if (drone.getState() instanceof HealState) {
+          key = "drone.hearts";
+          renderAnimation(animations.get(key), g, dt, (int) position.getX(),
+              (int) position.getY() - 9);
+        }
       }
     }
 
@@ -213,16 +241,16 @@ public class GameRenderer {
     public void drawLifeHUD(Graphics g, int life) {
       int x = 8;
       int y = 214;
-      
+
       // String
       int fontSize = 12;
       g.setFont(new Font("Courier", Font.PLAIN, fontSize));
       g.setColor(Color.white);
       g.drawString("LIFE", x, y);
-      
+
       x += 37;
       y -= 3;
-      
+
       g.setColor(GameColors.POMEGRANATE.getRGB());
 
       for (int i = 0; i < life; i++) {
