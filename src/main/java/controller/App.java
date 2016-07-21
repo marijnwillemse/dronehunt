@@ -60,6 +60,10 @@ public class App {
           ((keyCode == KeyEvent.VK_W) && e.isControlDown())) {
         finished = true;
       }
+      if (keyCode == 70) {
+        // "F" key pressed
+        view.getGamePanel().getGameRenderer().toggleFpsView();
+      }
       gameController.KeyPressed(keyCode);
     }
     inputContainer.clearInput();

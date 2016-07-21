@@ -97,7 +97,7 @@ public class Brain {
     this.model = model;
     init();
     train();
-    test();
+//    test();
   }
 
   private static void init() {
@@ -391,7 +391,7 @@ public class Brain {
     feedForward();
     int a = action(actual);
 //    printInput();
-    System.out.println("Chose to " + OUTPUT_NAMES[a]);
+//    System.out.println("Chose to " + OUTPUT_NAMES[a]);
 
     switch (a) {
       case 0: // Attack

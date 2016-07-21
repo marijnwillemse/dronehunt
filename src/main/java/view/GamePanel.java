@@ -54,4 +54,8 @@ public class GamePanel extends JPanel {
     // Draw the buffer onto the screen
     gameRenderer.paintBuffer(this.getGraphics());
   }
+
+  public GameRenderer getGameRenderer() {
+    return gameRenderer;
+  }
 }

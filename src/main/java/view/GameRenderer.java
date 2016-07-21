@@ -33,6 +33,8 @@ public class GameRenderer {
 
   private double time;
 
+  private boolean showFps = false;
+
   public GameRenderer(MainModel model) {
     this.model = model;
     spriteLoader = new SpriteLoader();
@@ -81,7 +83,9 @@ public class GameRenderer {
     methods.drawBulletHUD(g, model.getGame().getBullets());
     methods.drawLifeHUD(g, model.getGame().getLife());
 
-    methods.drawFramerate(g, frameCounter.getFramesPerSecond());
+    if (showFps) {
+      methods.drawFramerate(g, frameCounter.getFramesPerSecond());
+    }
     if (MainView.getDebug()) {
       methods.drawDebug(g, model.getWorld().getDrones());
     }
@@ -177,7 +181,7 @@ public class GameRenderer {
 
     public void drawBulletHUD(Graphics g, int bullets) {
       int x = 8;
-      int y = 194;
+      int y = 196;
 
       // String
       int fontSize = 12;
@@ -185,8 +189,8 @@ public class GameRenderer {
       g.setColor(Color.white);
       g.drawString("AMMO", x, y);
 
-      x += 41;
-      y -= 3;
+      x += 42;
+      y -= 5;
 
       int numberOfBullets = model.getGame().getBullets();
       int offset = 13;
@@ -264,15 +268,18 @@ public class GameRenderer {
       g.setColor(Color.white);
       g.drawString("LIFE", x, y);
 
-      x += 37;
-      y -= 3;
-
+      // Health bar
+      x += 34;
+      y -= 4;
       g.setColor(GameColors.POMEGRANATE.getRGB());
-
       for (int i = 0; i < life; i++) {
-        int x2 = x + i * 3;
+        int x2 = x + i * 2;
         g.fillRect(x2, y - 3, 2, 6);
       }
     }
+  }
+
+  public void toggleFpsView() {
+    showFps = !showFps ;
   }
 }

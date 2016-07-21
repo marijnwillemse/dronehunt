@@ -93,13 +93,6 @@ public class GameController {
         game.changeBullets(-1);
       }
     }
-
-    // Set drone target
-    //    if (button == 1) { // Left button clicked
-    //      model.getWorld().getDrones().get(0).setTarget(
-    //          new Vector2D((double) x, (double) y));
-    //    }
-
   }
 
   public void KeyPressed(int keyCode) {

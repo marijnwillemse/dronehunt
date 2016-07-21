@@ -5,10 +5,8 @@ import main.java.model.Drone;
 
 public class AttackState extends State {
 
-  private final double CHARGE_TIME = 0.5;
-  private final double RECOVER_TIME = 0.2;
+  private static final double RATE_OF_FIRE = 1.0;
   private double counter = 0;
-  private boolean fired = false;
 
   public AttackState(Drone drone) {
     super(drone);
@@ -17,18 +15,12 @@ public class AttackState extends State {
 
   @Override
   public void update(DroneController droneController, double dt) {
-    double period = fired ? RECOVER_TIME : CHARGE_TIME;
-    
-    if (counter < period) {
+
+    if (counter < RATE_OF_FIRE) {
       counter += dt;
     } else {
-      if (fired) {
-        drone.setState(droneController.react(drone));
-      } else {
-        counter = 0;
-        droneController.fire(drone);
-        fired = true;
-      }
+      droneController.fire(drone);
+      drone.setState(droneController.react(drone));
     }
   }
 }

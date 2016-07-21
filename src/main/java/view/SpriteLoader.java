@@ -33,7 +33,7 @@ public class SpriteLoader {
     imageInfo.put("quad.fire.1", new String[] {"/main/resources/images/quad.fire.1.png", "62", "29"});
     imageInfo.put("quad.fire.2", new String[] {"/main/resources/images/quad.fire.2.png", "62", "29"});
 
-    imageInfo.put("bullet", new String[] {"/main/resources/images/bullet.png", "10", "10"});
+    imageInfo.put("bullet", new String[] {"/main/resources/images/bullet.png", "20", "20"});
     imageInfo.put("foreground", new String[] {"/main/resources/images/foreground.png", "256", "224"});
     imageInfo.put("background", new String[] {"/main/resources/images/background.png", "256", "224"});
     imageInfo.put("box.bullet", new String[] {"/main/resources/images/box.bullet.png", "46", "18"});

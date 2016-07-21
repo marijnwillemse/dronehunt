@@ -1,15 +1,15 @@
 # dronehunt
 A Java Duck Hunt clone in which the player takes down hostile drones instead of defenseless ducks.
 
+The game features AI enemy behavior. Allowing the drones to think and act based on an artificial neural network. The units are learned how to best respond to perceived situations in order to be a challenging opponent.
+
 ## Planned features
 
-* Player health and hostile enemy behavior.
-* Enemy hiding and fleeing behavior.
-* Intelligent enemy behavior. Allow the drones to think and act based on a neural network. Learn how to best respond to its perceived situation and become a challenging opponent.
+* Display whether a shot was a hit or a miss.
 
 ## Later features
 
-* Highscore system
+* Highscore system.
 * Sound.
 * Menu screen.
 * Custom graphics.

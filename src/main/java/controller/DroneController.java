@@ -108,7 +108,6 @@ public class DroneController {
 
   public void testShot(int x, int y) {
     Point p = new Point(x, y);
-    System.out.println("Shot!");
     for (Drone drone : model.getWorld().getDrones()) {
       Rectangle hitArea = drone.getHitArea();
       if (hitArea.contains(p) && drone.isHittable()) {
