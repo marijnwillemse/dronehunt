@@ -136,6 +136,10 @@ public class Drone extends Observable {
   public boolean isInjured() {
     return injured;
   }
+  
+  public void heal() {
+    injured = false;
+  }
 
   public String getType() {
     return type;

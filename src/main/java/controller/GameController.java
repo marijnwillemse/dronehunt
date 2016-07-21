@@ -14,11 +14,11 @@ public class GameController {
   private DroneController droneController;
 
   private double reloadCounter;
-  private double reloadTime = 1.0;
+  private static final double RELOAD_TIME = 1.0;
 
   private double spawnCounter;
-  private double spawnTime = 0.5;
-  private double spawnChance = 0.2;
+  private static final double SPAWN_TIME = 0.5;
+  private static final double SPAWN_CHANCE = 0.2;
 
   public GameController(MainModel model) {
     this.model = model;
@@ -64,9 +64,9 @@ public class GameController {
 
   private void control(double dt) {
     spawnCounter += dt;
-    if (spawnCounter > spawnTime) {
-      spawnCounter = spawnCounter % spawnTime;
-      if (model.getWorld().numberOfDrones() < 2 && Math.random() < spawnChance) {
+    if (spawnCounter > SPAWN_TIME) {
+      spawnCounter = spawnCounter % SPAWN_TIME;
+      if (model.getWorld().numberOfDrones() < 2 && Math.random() < SPAWN_CHANCE) {
         // Spawn a new drone.
         String type = (MathOperations.randomBoolean()) ? "QUAD" : "HEXA";
         droneController.spawnDrone(type);
@@ -79,7 +79,7 @@ public class GameController {
 
     if (game.isReloading()) {
       reloadCounter += dt;
-      if (reloadCounter > reloadTime) {
+      if (reloadCounter > RELOAD_TIME) {
         game.reload();
         reloadCounter = 0;
       }
